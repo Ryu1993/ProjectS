@@ -63,3 +63,5 @@ crashlytics-build.properties
 /Assets/Resources
 /Assets/Oculus.meta
 /Assets/Resources.meta
+/Assets/Editor
+/Assets/MobileDependencyResolver
