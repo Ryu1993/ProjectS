@@ -7,7 +7,7 @@ public class GitTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //연동 test
+        
     }
 
     // Update is called once per frame
