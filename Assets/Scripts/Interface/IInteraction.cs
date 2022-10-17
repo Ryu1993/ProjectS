@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IItemable
+public interface IInteraction
 {
-    public Item ItemRequest();
+    public Transform transform { get; set; }
 
 }
