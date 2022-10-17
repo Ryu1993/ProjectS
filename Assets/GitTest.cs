@@ -9,7 +9,7 @@ public class GitTest : MonoBehaviour
     void Start()
     {
         Debug.Log("TEST");
-        Debug.Log("TEST2");
+        Debug.Log("TEST3");
     }
 
     // Update is called once per frame
