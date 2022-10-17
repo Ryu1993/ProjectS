@@ -59,3 +59,7 @@ sysinfo.txt
 crashlytics-build.properties
 
 /Assets/Download
+/Assets/Oculus
+/Assets/Resources
+/Assets/Oculus.meta
+/Assets/Resources.meta
