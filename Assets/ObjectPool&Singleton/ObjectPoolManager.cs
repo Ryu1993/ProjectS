@@ -26,7 +26,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         }
         foreach(var pool in m_pools) //현재 생성된 풀중에 해당 오브젝트에 해당하는 오브젝트풀이 있는지 체크후 있다면 기존의 풀을 반환
         {
-            if(pool.m_baseObj==baseObj)
+            if(pool.m_baseObj == baseObj)
             {
                 return pool;
             }
@@ -36,7 +36,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         m_pools.Add(resultPool);
         return resultPool;
     }
-    //Addressabl로 ObjectPool생성시 호출 
+    //Addressable로 ObjectPool생성시 호출 
     public ObjectPool PoolRequest(ref AsyncOperationHandle<GameObject> handle, int start, int add)
     {
         GameObject baseObj = handle.WaitForCompletion();//handle이 메모리에 오브젝트를 완전히 로드시킬 때까지 대기
