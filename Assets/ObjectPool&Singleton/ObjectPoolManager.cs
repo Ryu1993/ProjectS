@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
@@ -21,41 +20,47 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
 
     public ObjectPool PoolRequest(GameObject baseObj,int start,int add)
     {
-        if(!baseObj.TryGetComponent(out IPoolingable temp)) //´ë»óÀÌ ¿ÀºêÁ§Æ®Ç® ÀÎÅÍÆäÀÌ½º¸¦ °¡Áö°í ÀÖ´ÂÁö Ã¼Å©ÈÄ ¾ø´Ù¸é null¹İÈ¯
+        if(!baseObj.TryGetComponent(out IPoolingable temp)) //ëŒ€ìƒì´ ì˜¤ë¸Œì íŠ¸í’€ ì¸í„°í˜ì´ìŠ¤ë¥¼ ê°€ì§€ê³  ìˆëŠ”ì§€ ì²´í¬í›„ ì—†ë‹¤ë©´ nullë°˜í™˜
         {
             return null;
         }
-        if (SerachObjectPool(baseObj, out ObjectPool pool)) // ÇöÀç »ı¼ºµÈ Ç®Áß¿¡ ÇØ´ç ¿ÀºêÁ§Æ®¿¡ ÇØ´çÇÏ´Â ¿ÀºêÁ§Æ®Ç®ÀÌ ÀÖ´ÂÁö Ã¼Å©ÈÄ ¸¸¾à ÀÖ´Ù¸é ±âÁ¸ÀÇ Ç®À» ¹İÈ¯
+        foreach(var pool in m_pools) //í˜„ì¬ ìƒì„±ëœ í’€ì¤‘ì— í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ì— í•´ë‹¹í•˜ëŠ” ì˜¤ë¸Œì íŠ¸í’€ì´ ìˆëŠ”ì§€ ì²´í¬í›„ ìˆë‹¤ë©´ ê¸°ì¡´ì˜ í’€ì„ ë°˜í™˜
         {
-            return pool;
+            if(pool.m_baseObj == baseObj)
+            {
+                return pool;
+            }
         }
-        pool = new ObjectPool(baseObj, start, add, m_inactive, m_active); //ÇöÀç »ı¼ºµÈ Ç®Áß¿¡ ¾ø´Ù¸é »õ·Ó°Ô ¿ÀºêÁ§Æ® Ç®À» »ı¼ºÈÄ ¹İÈ¯
-        m_pools.Add(pool);
-        return pool;
+        //í˜„ì¬ ìƒì„±ëœ í’€ì¤‘ì— ì—†ë‹¤ë©´ ìƒˆë¡­ê²Œ ì˜¤ë¸Œì íŠ¸ í’€ì„ ìƒì„±í›„ ë°˜í™˜
+        ObjectPool resultPool = new ObjectPool(baseObj, start, add, m_inactive, m_active);
+        m_pools.Add(resultPool);
+        return resultPool;
     }
-
-
-    //Addressable·Î ObjectPool»ı¼º½Ã È£Ãâ
+    //Addressableë¡œ ObjectPoolìƒì„±ì‹œ í˜¸ì¶œ 
     public ObjectPool PoolRequest(ref AsyncOperationHandle<GameObject> handle, int start, int add)
     {
-        GameObject baseObj = handle.WaitForCompletion();//handleÀÌ ¸Ş¸ğ¸®¿¡ ¿ÀºêÁ§Æ®¸¦ ¿ÏÀüÈ÷ ·Îµå½ÃÅ³¶§±îÁö ´ë±â
-        if (!baseObj.TryGetComponent(out IPoolingable temp)) //´ë»óÀÌ ¿ÀºêÁ§Æ®Ç® ÀÎÅÍÆäÀÌ½º¸¦ °¡Áö°í ÀÖ´ÂÁö Ã¼Å©ÈÄ ¾ø´Ù¸é ¿ÀºêÁ§Æ®¸¦ ¾ğ·Îµå½ÃÅ°°í null¹İÈ¯
+        GameObject baseObj = handle.WaitForCompletion();//handleì´ ë©”ëª¨ë¦¬ì— ì˜¤ë¸Œì íŠ¸ë¥¼ ì™„ì „íˆ ë¡œë“œì‹œí‚¬ ë•Œê¹Œì§€ ëŒ€ê¸°
+        if (!baseObj.TryGetComponent(out IPoolingable temp)) //ëŒ€ìƒì´ ì˜¤ë¸Œì íŠ¸í’€ ì¸í„°í˜ì´ìŠ¤ë¥¼ ê°€ì§€ê³  ìˆëŠ”ì§€ ì²´í¬í›„ ì—†ë‹¤ë©´ ì˜¤ë¸Œì íŠ¸ë¥¼ ì–¸ë¡œë“œì‹œí‚¤ê³  nullë°˜í™˜
         {
             Addressables.Release(handle);
             return null;
-        }      
-        if (SerachObjectPool(baseObj,out ObjectPool pool))// ÇöÀç »ı¼ºµÈ Ç®Áß¿¡ ÇØ´ç ¿ÀºêÁ§Æ®¿¡ ÇØ´çÇÏ´Â ¿ÀºêÁ§Æ®Ç®ÀÌ ÀÖ´ÂÁö Ã¼Å©ÈÄ ¸¸¾à ÀÖ´Ù¸é ¿ÀºêÁ§Æ®¸¦ ¾ğ·Îµå½ÃÅ°°í ±âÁ¸ Ç®À» ¹İÈ¯
-        {
-            Addressables.Release(handle);
-            return pool;
         }
-        pool = new ObjectPool(baseObj, start, add, m_inactive, m_active);//ÇöÀç »ı¼ºµÈ Ç®Áß¿¡ ¾ø´Ù¸é »õ·Ó°Ô ¿ÀºêÁ§Æ® Ç®À» »ı¼ºÈÄ ¿ÀºêÁ§Æ® Ç®¿¡ ÇöÀç handleÀ» ¼¼ÆÃÈÄ ¹İÈ¯
-        pool.HandleSet(ref handle);
-        m_pools.Add(pool);
-        return pool;
+        foreach (var pool in m_pools) // í˜„ì¬ ìƒì„±ëœ í’€ì¤‘ì— í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ì— í•´ë‹¹í•˜ëŠ” ì˜¤ë¸Œì íŠ¸í’€ì´ ìˆëŠ”ì§€ ì²´í¬í›„ ë§Œì•½ ìˆë‹¤ë©´ ì˜¤ë¸Œì íŠ¸ë¥¼ ì–¸ë¡œë“œì‹œí‚¤ê³  ê¸°ì¡´ í’€ì„ ë°˜í™˜ 
+        {
+            if (pool.m_baseObj == baseObj)
+            {
+                Addressables.Release(handle);
+                return pool;
+            }
+        }
+        //í˜„ì¬ ìƒì„±ëœ í’€ì¤‘ì— ì—†ë‹¤ë©´ ìƒˆë¡­ê²Œ ì˜¤ë¸Œì íŠ¸ í’€ì„ ìƒì„±í›„ ì˜¤ë¸Œì íŠ¸ í’€ì— í˜„ì¬ handleì„ ì„¸íŒ…í›„ ë°˜í™˜
+        ObjectPool resultPool = new ObjectPool(baseObj, start, add, m_inactive, m_active);
+        resultPool.HandleSet(ref handle);
+        m_pools.Add(resultPool);
+        return resultPool;
     }
 
-    //AddressableÀÌ¿ëÇØ¼­ ¿ÀºêÁ§Æ® Ç® »ı¼º½Ã ¿À¹ö·Îµù
+    //Addressableì´ìš©í•´ì„œ ì˜¤ë¸Œì íŠ¸ í’€ ìƒì„±ì‹œ ì˜¤ë²„ë¡œë”©
     public ObjectPool PoolRequest(IResourceLocation location, int start, int add)
     {
         AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(location);
@@ -66,29 +71,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(reference);
         return PoolRequest(ref handle, start, add);
     }
-
-    private bool SerachObjectPool(GameObject baseObj,out ObjectPool returnPool) // ÇöÀç »ı¼ºµÈ ¿ÀºêÁ§Æ® Ç® ¸ñ·ÏÁß¿¡¼­ °Ë»ö
-    {
-        foreach(var pool in m_pools)
-        {
-            if (pool.m_baseObj == baseObj)
-            {
-                returnPool = pool;
-                return true;
-            }
-        }
-        returnPool = null;
-        return false;
-    }
-
-    public void RemoveObjectPool(ObjectPool pool) //ÇöÀç »ı¼ºµÈ ¿ÀºêÁ§Æ® Ç® ¸ñ·Ï¿¡¼­ »èÁ¦
-    {
-        if(m_pools.Contains(pool))
-        {
-            m_pools.Remove(pool);
-        }
-    }
-
 
 
 }
