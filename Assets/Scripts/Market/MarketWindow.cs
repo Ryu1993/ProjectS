@@ -7,36 +7,32 @@ public class MarketWindow : MonoBehaviour
 {
     [SerializeField]
     private Transform marketGemsParent;
-    [SerializeField]
-    private Gem[] encounterGems;
     private MarketGem[] marketGems;
     private int curDay = -1;
     private int curEncounter = 0;
-
-
+    public Dictionary<Gem, MarketGem> encounterGems = new Dictionary<Gem, MarketGem>();
     private void Awake()=> marketGems = new MarketGem[marketGemsParent.childCount];
-
-
     public void MarketPopUp()
     {
-        if(encounterGems.Length<GameManager.Instance.encounterGems.Count)
+        if(GameManager.Instance.encountGems.Count!=0)
         {
-            int sub = GameManager.Instance.encounterGems.Count - encounterGems.Length;
-            encounterGems = GameManager.Instance.encounterGems.ToArray();
-            for(int i =0; i < sub; i++)
-            {            
-                marketGems[curEncounter].curGem = encounterGems[i];
-                marketGems[curEncounter].IconSet();
-                marketGems[curEncounter].PriceSet();
+            foreach(Gem gem in GameManager.Instance.encountGems)
+            {
+                encounterGems.Add(gem, marketGems[curEncounter]);
+                encounterGems[gem].IconSet();
+                encounterGems[gem].PriceSet();
                 curEncounter++;
             }
+            GameManager.Instance.encountGems.Clear();
         }
-
-
-
-
+        if(curDay!=TimeManager.Instance.dayCount)
+        {
+            foreach(MarketGem marketGem in encounterGems.Values)
+            {
+                marketGem.PriceSet();
+            }
+        }
     }
-
 
 
 

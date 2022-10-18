@@ -11,4 +11,7 @@ public class Crop : Item
     [SerializeField]
     private float _discardTime;
     public float discardTime { get { return _discardTime; } private set {} }
+
+
+
 }

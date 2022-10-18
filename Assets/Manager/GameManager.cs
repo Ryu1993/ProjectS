@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public Stack<Gem> encounterGems = new Stack<Gem>();
-
-
+    public List<Gem> detecionGems = new List<Gem>();
+    public List<Gem> encountGems = new List<Gem>();
 
 }
