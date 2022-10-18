@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TimeManager : MonoBehaviour
+public class TimeManager : Singleton<TimeManager>
 {
     [SerializeField, Range(1,10)]
     private int timeAcceleration;
@@ -12,7 +12,6 @@ public class TimeManager : MonoBehaviour
     private WaitForSecondsRealtime realSecond;
     public UnityAction timeProgressAction;
     private bool isPause;
-
 
     private IEnumerator Start()
     {
