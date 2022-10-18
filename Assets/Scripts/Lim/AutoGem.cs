@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gems
+public class GemsCount
 {
     public Gem gem;
     public int count;
@@ -12,11 +12,13 @@ public class AutoGem : MonoBehaviour
 {
     [SerializeField]
     private LayerMask gemLayer;
-    private bool isCoolTime = false;
-    private float coolTime = 5f;
-    private Vector3 centerPosition;
+    [SerializeField]
+    private Transform centerTransform;
+    [SerializeField]
     private Vector3 boxSize;
-    private Gems[] gems;
+    private float coolTime = 5f;
+    private bool isCoolTime = false;
+    private GemsCount[] gems;
 
     private void Start()
     {
@@ -32,13 +34,15 @@ public class AutoGem : MonoBehaviour
         if (isCoolTime)
             return;
 
-        Collider[] colliders = Physics.OverlapBox(centerPosition, boxSize, Quaternion.identity, gemLayer);
+        Collider[] colliders = Physics.OverlapBox(centerTransform.position, boxSize, Quaternion.identity, gemLayer);
         if(colliders.Length>0)
         {
             for (int i = 0; i < colliders.Length; i++)
             {
+                //배열 찾기
                 //젬 저장
-                //젬 소환해제
+                colliders[i].TryGetComponent(out IPoolingable target);
+                target.home.Return(colliders[i].gameObject);
             }
         }
     }
