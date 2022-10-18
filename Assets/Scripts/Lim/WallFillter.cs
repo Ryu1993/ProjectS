@@ -8,7 +8,6 @@ public class WallFillter : MonoBehaviour
     [SerializeField]
     private LayerMask blockLayer;
     private SlimeFarm slimeFarm;
-    private float fillterPower = 5f;
 
     private void OnEnable()
     {
@@ -17,17 +16,18 @@ public class WallFillter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer != blockLayer)
+        if(((1<<other.gameObject.layer)&blockLayer)==0)
+        {
             return;
-
+        }
         if(other.transform.parent == slimeFarm.transform)
         {
-            Rigidbody rb = other.GetComponent<Rigidbody>();
+        Rigidbody rb = other.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                Vector3 opposite = -rb.velocity;
+                Vector3 opposite = Vector3.Reflect(rb.velocity, transform.up);
                 rb.velocity = Vector3.zero;
-                rb.AddForce(opposite * fillterPower, ForceMode.Impulse);
+                rb.AddForce(opposite, ForceMode.Impulse);
             }
         }
         else

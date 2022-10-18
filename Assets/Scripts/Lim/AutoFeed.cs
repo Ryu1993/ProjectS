@@ -20,9 +20,10 @@ public class AutoFeed : MonoBehaviour
     [SerializeField]
     private Transform cropsInputTransform;
 
+    private Crop crop;
+    private int count;
     private float coolTime = 5f;
     private bool isCoolTime = false;
-    private CropsCount[] crops;
 
     private void Start()
     {
