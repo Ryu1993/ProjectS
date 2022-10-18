@@ -65,3 +65,4 @@ crashlytics-build.properties
 /Assets/Resources.meta
 /Assets/Editor
 /Assets/MobileDependencyResolver
+/ProjectSettings/TimelineSettings.asset

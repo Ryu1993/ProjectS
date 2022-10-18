@@ -9,27 +9,31 @@ public class TimeManager : MonoBehaviour
     private int timeAcceleration;
     private int gameSecond = 0;
     public int dayCount { get; private set; }
-    private WaitForSecondsRealtime second;
+    private WaitForSecondsRealtime realSecond;
     public UnityAction timeProgressAction;
+    private bool isPause;
 
 
-    private void Awake()
+    private IEnumerator Start()
     {
-        second = new WaitForSecondsRealtime(1f);
-    }
-
-
-    private IEnumerator TimeCount()
-    {
-        gameSecond += 120 * timeAcceleration;
-        if (gameSecond == 86400)
+        realSecond = new WaitForSecondsRealtime(1f);
+        while(true)
         {
-            gameSecond = 0;
-            dayCount++;
+            if(!isPause)
+            {
+                gameSecond += timeAcceleration;
+                if (gameSecond >= 1440)
+                {
+                    gameSecond = 0;
+                    dayCount++;
+                }
+                timeProgressAction?.Invoke();
+            }
+            yield return realSecond;
         }
-        timeProgressAction?.Invoke();
-        yield return second;
     }
+
+
 
 
 
