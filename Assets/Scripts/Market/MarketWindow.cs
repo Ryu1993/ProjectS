@@ -9,25 +9,39 @@ public class MarketWindow : MonoBehaviour
     private Transform marketGemsParent;
     private MarketGem[] marketGems;
     private int curDay = -1;
-    private int curEncounter = 0;
-    public Dictionary<Gem, MarketGem> encounterGems = new Dictionary<Gem, MarketGem>();
-    private void Awake()=> marketGems = new MarketGem[marketGemsParent.childCount];
+    private int curDetection = 0;
+    public Dictionary<Gem, MarketGem> detectionGems = new Dictionary<Gem, MarketGem>();
+    private void Awake()
+    {
+        marketGems = new MarketGem[marketGemsParent.childCount];
+        for(int i =0; i<marketGemsParent.childCount;i++)
+        {
+            marketGemsParent.GetChild(i).TryGetComponent(out marketGems[i]);
+        }
+    }
+
+
+    //MarketPop할 경우 신규 획득한 gem이 있으면 거래목록에 추가,날짜가 지났다면 가격 재조정
     public void MarketPopUp()
     {
-        if(GameManager.Instance.encountGems.Count!=0)
+        if(GameManager.Instance.detectionGems.Count>detectionGems.Count)
         {
-            foreach(Gem gem in GameManager.Instance.encountGems)
+            foreach (Gem gem in GameManager.Instance.detectionGems)
             {
-                encounterGems.Add(gem, marketGems[curEncounter]);
-                encounterGems[gem].IconSet();
-                encounterGems[gem].PriceSet();
-                curEncounter++;
+                if (detectionGems.TryGetValue(gem, out MarketGem temp))
+                {
+                    continue;
+                }
+                detectionGems.Add(gem, marketGems[curDetection]);
+                detectionGems[gem].curGem = gem;
+                detectionGems[gem].IconSet();
+                detectionGems[gem].PriceSet();
+                curDetection++;
             }
-            GameManager.Instance.encountGems.Clear();
         }
         if(curDay!=TimeManager.Instance.dayCount)
         {
-            foreach(MarketGem marketGem in encounterGems.Values)
+            foreach(MarketGem marketGem in detectionGems.Values)
             {
                 marketGem.PriceSet();
             }
