@@ -13,9 +13,19 @@ public class AutoGem : MonoBehaviour
     [SerializeField]
     private LayerMask gemLayer;
     private bool isCoolTime = false;
+    private float coolTime = 5f;
     private Vector3 centerPosition;
     private Vector3 boxSize;
     private Gems[] gems;
+
+    private void Start()
+    {
+        StartCoroutine(CheckCoolTime(coolTime));
+    }
+    private void Update()
+    {
+        HarvestGem();
+    }
 
     private void HarvestGem()
     {
