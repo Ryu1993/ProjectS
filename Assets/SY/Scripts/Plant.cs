@@ -1,17 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Plant : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Transform[] fruitsTransform;
+    private Crop growCrop;
+    private float growTime;
+    private float bornTime;
+
+    private void OnEnable()
     {
-        
+        growTime = growCrop.growTime;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DayChange()
+    {
+        bornTime++;
+        if(bornTime < growTime)
+        {
+            return;
+        }
+        else
+        {
+            MakeFruits();
+        }
+    }
+
+    public void MakeFruits()
     {
         
     }

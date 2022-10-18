@@ -10,6 +10,8 @@ public class FarmMachine : MonoBehaviour
     public Vector3 machineHeight;
     public float detectRange;
     private bool isPlanted = false;
+    [SerializeField]
+    private Transform plantArea;
     
     //[SerializeField]
     //private List<Transform> cropTransform = new List<Transform>();
@@ -22,10 +24,10 @@ public class FarmMachine : MonoBehaviour
     private void Update()
     {
         DetectCrop();
-        //if(Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    cropTransform.Add(objectPool.Call(transform.position));
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CropManager.Instance.timeChange();
+        }
         //if (Input.GetKeyDown(KeyCode.F))
         //{
         //    foreach (Transform t in cropTransform)
@@ -44,7 +46,7 @@ public class FarmMachine : MonoBehaviour
             if(isPlanted == false)
             {
                 Crops target = targets[0].transform.GetComponent<Crops>();
-                target?.Back();
+                target?.Plant(plantArea);
                 Debug.Log("심습니다.");
                 isPlanted = true;
             }
@@ -56,11 +58,14 @@ public class FarmMachine : MonoBehaviour
         }
     }
 
+    public void DeleteCrop()
+    {
+
+    }
+    
     public void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + machineHeight, detectRange);
     }
-
-    //Plant가 있고 자식에 열매가 열릴 포지션이 존재
 }
