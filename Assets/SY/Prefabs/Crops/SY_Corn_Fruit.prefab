@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 23000014227985804}
   - component: {fileID: 64000013077887286}
   - component: {fileID: -7983476135199668229}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SY_Corn_Fruit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,3 +112,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crop: {fileID: 11400000, guid: 48c5c4a15037d4a2ab38be39d1807391, type: 2}
+  plant: {fileID: 1000012235373026, guid: 0ef40614ff80242e3a6d12be08df8705, type: 3}
