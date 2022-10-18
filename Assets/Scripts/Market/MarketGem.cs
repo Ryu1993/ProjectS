@@ -20,7 +20,7 @@ public class MarketGem : MonoBehaviour
     }
     public void PriceSet()
     {
-        curPrice = curGem? Random.Range(curGem.minPrice, curGem.maxPrice) : curPrice;
+        curPrice = curGem? (int)Random.Range(curGem.minPrice, curGem.maxPrice) : curPrice;
         price.text = curGem? curPrice.ToString() + "G" : price.text;
     }
 
