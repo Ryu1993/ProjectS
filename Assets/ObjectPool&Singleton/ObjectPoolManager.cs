@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
@@ -24,18 +25,16 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         {
             return null;
         }
-        foreach(var pool in m_pools) // 현재 생성된 풀중에 해당 오브젝트에 해당하는 오브젝트풀이 있는지 체크후 만약 있다면 기존의 풀을 반환
+        if (SerachObjectPool(baseObj, out ObjectPool pool)) // 현재 생성된 풀중에 해당 오브젝트에 해당하는 오브젝트풀이 있는지 체크후 만약 있다면 기존의 풀을 반환
         {
-            if(pool.m_baseObj==baseObj)
-            {
-                return pool;
-            }
+            return pool;
         }
-        //현재 생성된 풀중에 없다면 새롭게 오브젝트 풀을 생성후 반환
-        ObjectPool resultPool = new ObjectPool(baseObj, start, add, m_inactive, m_active);
-        m_pools.Add(resultPool);
-        return resultPool;
+        pool = new ObjectPool(baseObj, start, add, m_inactive, m_active); //현재 생성된 풀중에 없다면 새롭게 오브젝트 풀을 생성후 반환
+        m_pools.Add(pool);
+        return pool;
     }
+
+
     //Addressable로 ObjectPool생성시 호출
     public ObjectPool PoolRequest(ref AsyncOperationHandle<GameObject> handle, int start, int add)
     {
@@ -44,20 +43,16 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         {
             Addressables.Release(handle);
             return null;
-        }
-        foreach (var pool in m_pools) // 현재 생성된 풀중에 해당 오브젝트에 해당하는 오브젝트풀이 있는지 체크후 만약 있다면 오브젝트를 언로드시키고 기존 풀을 반환
+        }      
+        if (SerachObjectPool(baseObj,out ObjectPool pool))// 현재 생성된 풀중에 해당 오브젝트에 해당하는 오브젝트풀이 있는지 체크후 만약 있다면 오브젝트를 언로드시키고 기존 풀을 반환
         {
-            if (pool.m_baseObj == baseObj)
-            {
-                Addressables.Release(handle);
-                return pool;
-            }
+            Addressables.Release(handle);
+            return pool;
         }
-        //현재 생성된 풀중에 없다면 새롭게 오브젝트 풀을 생성후 오브젝트 풀에 현재 handle을 세팅후 반환
-        ObjectPool resultPool = new ObjectPool(baseObj, start, add, m_inactive, m_active);
-        resultPool.HandleSet(ref handle);
-        m_pools.Add(resultPool);
-        return resultPool;
+        pool = new ObjectPool(baseObj, start, add, m_inactive, m_active);//현재 생성된 풀중에 없다면 새롭게 오브젝트 풀을 생성후 오브젝트 풀에 현재 handle을 세팅후 반환
+        pool.HandleSet(ref handle);
+        m_pools.Add(pool);
+        return pool;
     }
 
     //Addressable이용해서 오브젝트 풀 생성시 오버로딩
@@ -71,6 +66,29 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(reference);
         return PoolRequest(ref handle, start, add);
     }
+
+    private bool SerachObjectPool(GameObject baseObj,out ObjectPool returnPool) // 현재 생성된 오브젝트 풀 목록중에서 검색
+    {
+        foreach(var pool in m_pools)
+        {
+            if (pool.m_baseObj == baseObj)
+            {
+                returnPool = pool;
+                return true;
+            }
+        }
+        returnPool = null;
+        return false;
+    }
+
+    public void RemoveObjectPool(ObjectPool pool) //현재 생성된 오브젝트 풀 목록에서 삭제
+    {
+        if(m_pools.Contains(pool))
+        {
+            m_pools.Remove(pool);
+        }
+    }
+
 
 
 }
