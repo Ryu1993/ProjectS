@@ -1,18 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class WallFillter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private LayerMask blockLayer;
+    private SlimeFarm slimeFarm;
+    private float fillterPower = 5f;
+
+    private void OnEnable()
     {
-        
+        slimeFarm = GetComponentInParent<SlimeFarm>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.gameObject.layer != blockLayer)
+            return;
+
+        if(other.transform.parent == slimeFarm.transform)
+        {
+            Rigidbody rb = other.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Vector3 opposite = -rb.velocity;
+                rb.velocity = Vector3.zero;
+                rb.AddForce(opposite * fillterPower, ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            other.transform.parent = slimeFarm.transform;
+        }
     }
 }

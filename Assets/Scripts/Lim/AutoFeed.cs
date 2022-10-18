@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Crops
+public class CropsCount
 {
     public Crop crop;
     public int count;
@@ -13,13 +13,16 @@ public class AutoFeed : MonoBehaviour
 {
     [SerializeField]
     private LayerMask cropsLayer;
-
+    [SerializeField]
     private int feedCount = 3;
+    [SerializeField]
+    private Transform feedTransform;
+    [SerializeField]
+    private Transform cropsInputTransform;
+
     private float coolTime = 5f;
     private bool isCoolTime = false;
-    private Vector3 feedPosition;
-    private Vector3 cropsInputPosition;
-    private Crops[] crops;
+    private CropsCount[] crops;
 
     private void Start()
     {
@@ -44,13 +47,15 @@ public class AutoFeed : MonoBehaviour
 
     private void GetCrops()
     {
-        Collider[] colliders = Physics.OverlapSphere(cropsInputPosition, 1f, cropsLayer);
+        Collider[] colliders = Physics.OverlapSphere(cropsInputTransform.position, 1f, cropsLayer);
         if(colliders.Length > 0)
         {
             for (int i = 0; i < colliders.Length; i++)
             {
+                //배열 찾기
                 //아이템 저장
-                //오브젝트 풀링 소환해제
+                colliders[i].TryGetComponent(out IPoolingable target);
+                target.home.Return(colliders[i].gameObject);
             }
         }
     }
