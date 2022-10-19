@@ -16,11 +16,6 @@ public class FarmMachine : MonoBehaviour
     //[SerializeField]
     //private List<Transform> cropTransform = new List<Transform>();
 
-    private void Awake()
-    {
-       
-    }
-
     private void Update()
     {
         DetectCrop();
@@ -37,7 +32,8 @@ public class FarmMachine : MonoBehaviour
         //    cropTransform.Clear();
         //}
     }
-   
+
+    //
     public void DetectCrop()
     {
         Collider[] targets = Physics.OverlapSphere(transform.position + machineHeight, detectRange, cropMask);
@@ -45,7 +41,7 @@ public class FarmMachine : MonoBehaviour
         {
             if(isPlanted == false)
             {
-                Crops target = targets[0].transform.GetComponent<Crops>();
+                SceneCrop target = targets[0].transform.GetComponent<SceneCrop>();
                 target?.Plant(plantArea);
                 Debug.Log("심습니다.");
                 isPlanted = true;
@@ -58,6 +54,7 @@ public class FarmMachine : MonoBehaviour
         }
     }
 
+    //물을 오래 안주거나 다른 식물을 심기위한 기능
     public void DeleteCrop()
     {
 

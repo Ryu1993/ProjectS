@@ -12,10 +12,12 @@ public class ItemManager : Singleton<ItemManager>
     private ObjectPool slimeObjectPool;
     private ObjectPool cropObjectPool;
     [SerializeField]
-    SceneGem sceneGem;
+    SceneCrop sceneCrop;
+    //[SerializeField]
+    //SceneCrop sceneCrop;
     private void Awake()
     {
-        gemObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneGem.gameObject, 20, 10);
+        //cropObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneCrop.gameObject, 20, 10);
     }
 
     public Transform CreateSceneItem(Item item,Vector3 position,ObjectPool objectPool)
