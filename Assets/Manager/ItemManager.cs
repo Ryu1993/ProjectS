@@ -22,7 +22,7 @@ public class ItemManager : Singleton<ItemManager>
     {
         objectPool.Call(position).TryGetComponent(out SceneItem sceneItem);
         sceneItem.ItemSetting(item);
-        return sceneGem.transform;
+        return sceneItem.transform;
     }
 
     public Transform CreateSceneItem(Gem gem,Vector3 position)
