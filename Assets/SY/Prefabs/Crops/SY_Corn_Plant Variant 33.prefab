@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9005498689605757057}
   - component: {fileID: 3991281496688472239}
   - component: {fileID: 6040676012417795663}
-  - component: {fileID: 8961209274812880140}
+  - component: {fileID: 5045663468118409175}
   m_Layer: 0
   m_Name: SY_Corn_Plant Variant 33
   m_TagString: Untagged
@@ -102,7 +102,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300012, guid: b69b26c8b73b8bd49bf243bbe541a2e0, type: 3}
---- !u!114 &8961209274812880140
+--- !u!114 &5045663468118409175
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,10 +114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2911733e48749c6842fcb987b16f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitsTransform:
-  - {fileID: 4887119887387618779}
-  - {fileID: 4887119887186339224}
-  - {fileID: 4887119886125615288}
+  crop: {fileID: 11400000, guid: 48c5c4a15037d4a2ab38be39d1807391, type: 2}
+  plant: {fileID: 11400000, guid: fff56e530f9ef406f8bed9b33875c16b, type: 2}
 --- !u!1 &4887119886125615291
 GameObject:
   m_ObjectHideFlags: 0

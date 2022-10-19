@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Oculus.Interaction.HandGrab;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -11,13 +12,16 @@ public class ItemManager : Singleton<ItemManager>
     private ObjectPool gemObjectPool;
     private ObjectPool slimeObjectPool;
     private ObjectPool cropObjectPool;
+    private ObjectPool plantObjectPool;
     [SerializeField]
     SceneCrop sceneCrop;
-    //[SerializeField]
-    //SceneCrop sceneCrop;
+    [SerializeField]
+    ScenePlant scenePlant;
+    
     private void Awake()
     {
-        //cropObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneCrop.gameObject, 20, 10);
+        cropObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneCrop.gameObject, 20, 10);
+        plantObjectPool = ObjectPoolManager.Instance.PoolRequest(scenePlant.gameObject, 20, 10);
     }
 
     public Transform CreateSceneItem(Item item,Vector3 position,ObjectPool objectPool)
@@ -35,7 +39,11 @@ public class ItemManager : Singleton<ItemManager>
     {
         return CreateSceneItem(crop,position,cropObjectPool);
     }
-
+    public void CreateScenePlant(Plant plant, Vector3 position)
+    {
+        Transform temp = plantObjectPool.Call(position);
+        temp.GetComponent<ScenePlant>().Plant = plant;
+    }
     public Transform CreateSceneItem(Slime slime, Vector3 position)
     {
         return null;
