@@ -5,5 +5,6 @@ using UnityEngine;
 public interface IItemable
 {
     public Item ItemRequest();
+    public void ItemReturn();
 
 }

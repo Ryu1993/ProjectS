@@ -4,6 +4,5 @@ using UnityEngine;
 
 public interface IInteraction
 {
-    public Transform transform { get; set; }
 
 }
