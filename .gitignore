@@ -67,3 +67,4 @@ crashlytics-build.properties
 /Assets/MobileDependencyResolver
 /ProjectSettings/TimelineSettings.asset
 Assets/ObjectPool&Singleton/ObjectPoolManager.cs
+/UserSettings
