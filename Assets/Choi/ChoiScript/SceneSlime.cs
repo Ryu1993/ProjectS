@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AI;
 using UnityEngine.SocialPlatforms;
+using Unity.VisualScripting;
 
 namespace BC
 {
@@ -24,7 +25,7 @@ namespace BC
                 hungry = value;
                 if(hungry > 300)
                 {
-                    
+                    FindFeed();
                 }
             }
         }
@@ -102,7 +103,6 @@ namespace BC
             if(Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out hit, Mathf.Infinity, groundMask))
             {
                 agent.SetDestination(hit.point);
-              
             }
         }
 
@@ -112,8 +112,21 @@ namespace BC
             Physics.OverlapSphereNonAlloc(transform.position, 1f, colliders, feedMask);
             if(colliders[0] != null)
             {
-                hungry += 150;
+                if (colliders[0].TryGetComponent(out IEatable feed))
+                {
+                    if(feed.CropRequest()==curSlime.likeFeed)
+                    {
+                        feed.home.Return(colliders[0].gameObject);
+                        hungry += 150;
+                        CreateGem();
+                    }
+                }
             }
+        }
+
+        private void CreateGem()
+        {
+            //내일 작성
         }
 
         private void SlimeJump()
