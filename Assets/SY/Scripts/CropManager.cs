@@ -28,7 +28,7 @@ public class CropManager : Singleton<CropManager>
     private void Start()
     {
         //objectPool = ObjectPoolManager.Instance.PoolRequest(crops[0], 10, 5);
-        soilPool = ObjectPoolManager.Instance.PoolRequest(soil, 10, 5);
+        //soilPool = ObjectPoolManager.Instance.PoolRequest(soil, 10, 5);
     }
 
     private void Hi()

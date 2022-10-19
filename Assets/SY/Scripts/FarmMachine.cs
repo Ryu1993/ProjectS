@@ -5,16 +5,12 @@ using UnityEngine;
 public class FarmMachine : MonoBehaviour
 {
     //업그레이드 : 스프링쿨러, 비료, 작물 제거, 비옥한 토양, 기적의 비료
-    public Crop crop;
     [SerializeField] LayerMask cropMask;
     public Vector3 machineHeight;
     public float detectRange;
     private bool isPlanted = false;
     [SerializeField]
     private Transform plantArea;
-    
-    //[SerializeField]
-    //private List<Transform> cropTransform = new List<Transform>();
 
     private void Update()
     {
@@ -42,13 +38,16 @@ public class FarmMachine : MonoBehaviour
             if(isPlanted == false)
             {
                 SceneCrop target = targets[0].transform.GetComponent<SceneCrop>();
-                target?.Plant(plantArea);
-                Debug.Log("심습니다.");
-                isPlanted = true;
+                if (target != null)
+                {
+                    ItemManager.Instance.CreateScenePlant(target.plant, plantArea.position);
+                    //target.ItemReturn();
+                    isPlanted = true;
+                }
             }
             else
             {
-                Debug.Log("심어져있습니다.");
+                //Debug.Log("심어져있습니다.");
             }
             
         }
