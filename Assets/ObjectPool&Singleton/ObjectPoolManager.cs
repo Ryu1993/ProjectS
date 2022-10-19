@@ -11,15 +11,20 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     private List<ObjectPool> m_pools = new List<ObjectPool>();
     private Transform m_active;
     private Transform m_inactive;
-    private void Awake()
+
+    private void InactiveSet()
     {
-        m_active = new GameObject("Active").transform;
-        m_inactive = new GameObject("InActive").transform;
-        m_inactive.gameObject.SetActive(false);
+        if(m_active == null)
+        {
+            m_active = new GameObject("Active").transform;
+            m_inactive = new GameObject("InActive").transform;
+            m_inactive.gameObject.SetActive(false);
+        }
     }
 
     public ObjectPool PoolRequest(GameObject baseObj,int start,int add)
     {
+        InactiveSet();
         if(!baseObj.TryGetComponent(out IPoolingable temp)) //대상이 오브젝트풀 인터페이스를 가지고 있는지 체크후 없다면 null반환
         {
             return null;
