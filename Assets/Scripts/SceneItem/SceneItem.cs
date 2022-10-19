@@ -6,6 +6,7 @@ public class SceneItem : MonoBehaviour,IInteraction,IPoolingable,IItemable
 {
     protected MeshRenderer m_Renderer;
     protected MeshFilter m_Filter;
+    protected Rigidbody m_Rigidbody;
     protected Item curItem;
     public ObjectPool home { get; set; }
 
@@ -13,6 +14,7 @@ public class SceneItem : MonoBehaviour,IInteraction,IPoolingable,IItemable
     {
         m_Renderer = GetComponent<MeshRenderer>();
         m_Filter = GetComponent<MeshFilter>();
+        m_Rigidbody = GetComponent<Rigidbody>();
     }
     public void ItemSetting(Item item)
     {
