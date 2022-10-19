@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Oculus.Interaction.HandGrab;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -14,12 +13,15 @@ public class ItemManager : Singleton<ItemManager>
     private ObjectPool cropObjectPool;
     private ObjectPool plantObjectPool;
     [SerializeField]
+    SceneGem sceneGem;
+    [SerializeField]
     SceneCrop sceneCrop;
     [SerializeField]
     ScenePlant scenePlant;
     
     private void Awake()
     {
+        gemObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneGem.gameObject, 20,10);
         cropObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneCrop.gameObject, 20, 10);
         plantObjectPool = ObjectPoolManager.Instance.PoolRequest(scenePlant.gameObject, 20, 10);
     }
