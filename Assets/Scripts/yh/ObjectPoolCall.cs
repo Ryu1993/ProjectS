@@ -11,12 +11,11 @@ public class ObjectPoolCall : MonoBehaviour
     List<GameObject> fields = new List<GameObject>();
     [SerializeField]
     List<GameObject> gameObjects = new List<GameObject>();
-    [SerializeField]
-    Vector3 spawnPosition;
+    
+    public Vector3 spawnPosition;
     [SerializeField]
     int maxAmount;
-    [SerializeField]
-    int curAmount;
+    public int curAmount;
     private void Awake()
     {
         curAmount = 0;
@@ -48,8 +47,8 @@ public class ObjectPoolCall : MonoBehaviour
         
         while (true)
        {
-            int i = Random.Range(0, 4);
-            spawnPosition = fields[i].transform.position;
+            //int i = Random.Range(0, 4);
+            //spawnPosition = fields[i].transform.position;
             if (curAmount < maxAmount)
             {
                 gameObjects.Add(objectPool.Call(spawnPosition, Quaternion.identity).gameObject);
