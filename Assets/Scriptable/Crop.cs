@@ -10,5 +10,5 @@ public class Crop : Item
     public float growTime { get { return _growTime; } private set {} }
     [SerializeField]
     private float _discardTime;
-    public float discardTime { get { return _discardTime; } private set {} }
+    public float discardTime { get { return _discardTime; } private set { } }
 }
