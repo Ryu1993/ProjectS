@@ -68,3 +68,5 @@ crashlytics-build.properties
 /ProjectSettings/TimelineSettings.asset
 Assets/ObjectPool&Singleton/ObjectPoolManager.cs
 /UserSettings
+/Downaloader
+/ProjectSettings
