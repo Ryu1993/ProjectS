@@ -5,8 +5,4 @@ using UnityEngine;
 public class TestObjectPooling : MonoBehaviour, IPoolingable
 {
     public ObjectPool home { get; set; }
-
-
-
-
 }

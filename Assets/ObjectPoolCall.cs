@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPollCall : MonoBehaviour
+public class ObjectPoolCall : MonoBehaviour
 {
     [SerializeField]
     GameObject poolTest;
     ObjectPool objectPool;
+    [SerializeField]
+    List<GameObject> fields = new List<GameObject>();
     [SerializeField]
     List<GameObject> gameObjects = new List<GameObject>();
     [SerializeField]
@@ -18,8 +20,7 @@ public class ObjectPollCall : MonoBehaviour
     private void Awake()
     {
         curAmount = 0;
-        maxAmount = 10;
-        spawnPosition = poolTest.transform.position;
+        maxAmount = 50;
         objectPool = ObjectPoolManager.Instance.PoolRequest(poolTest,maxAmount,3);
         StartCoroutine(CheckAmount());
     }
@@ -44,9 +45,12 @@ public class ObjectPollCall : MonoBehaviour
     
     IEnumerator CheckAmount()
     {
+        
         while (true)
        {
-            if(curAmount < maxAmount)
+            int i = Random.Range(0, 4);
+            spawnPosition = fields[i].transform.position;
+            if (curAmount < maxAmount)
             {
                 gameObjects.Add(objectPool.Call(spawnPosition, Quaternion.identity).gameObject);
                 curAmount++;
