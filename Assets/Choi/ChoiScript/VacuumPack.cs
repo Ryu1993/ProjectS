@@ -8,7 +8,6 @@ namespace BC
     public class VacuumPack : MonoBehaviour
     {
         private enum STATE { }
-
     }
 }
 

@@ -12,7 +12,6 @@ namespace BC
     [RequireComponent(typeof(NavMeshAgent))]
     public class SceneSlime : MonoBehaviour, IInteraction, IItemable
     {
-
         public Slime curSlime;
         private float hungry;
         private UnityAction stateAction;
@@ -22,6 +21,10 @@ namespace BC
         public float Hungry { get { return hungry; }
             set
             {
+                if(value > 600)
+                {
+                    value = 600;
+                }
                 hungry = value;
                 if(hungry > 300)
                 {
@@ -31,8 +34,6 @@ namespace BC
         }
         private float speed;
         private float jumpPower;
-
-        private WaitForSecondsRealtime hungryTime;
 
         public float size;
 
@@ -45,7 +46,7 @@ namespace BC
         RaycastHit hit;
         [SerializeField]
         Transform raycastOrigin;
-        private Collider[] colliders = new Collider[1];
+        private Collider[] FeedColliders = new Collider[1];
         LayerMask feedMask;
 
         float idleCount;
@@ -80,21 +81,6 @@ namespace BC
                 }
             }
         }
-        public void BeingItme()
-        {
-            //아이템이 되어버리기
-            //풀에서 비활성화시키기
-        }
-        public Item ItemRequest()
-        {
-            throw new System.NotImplementedException();
-        }
-
-
-        public void ItemReturn()
-        {
-            
-        }
 
         private void SlimeMovement()
         {
@@ -108,15 +94,15 @@ namespace BC
 
         private void FindFeed()
         {
-            colliders[0] = null;
-            Physics.OverlapSphereNonAlloc(transform.position, 1f, colliders, feedMask);
-            if(colliders[0] != null)
+            FeedColliders[0] = null;
+            Physics.OverlapSphereNonAlloc(transform.position, 1f, FeedColliders, feedMask);
+            if(FeedColliders[0] != null)
             {
-                if (colliders[0].TryGetComponent(out IEatable feed))
+                if (FeedColliders[0].TryGetComponent(out IEatable feed))
                 {
                     if(feed.CropRequest()==curSlime.likeFeed)
                     {
-                        feed.home.Return(colliders[0].gameObject);
+                        feed.home.Return(FeedColliders[0].gameObject);
                         hungry += 150;
                         CreateGem();
                     }
@@ -126,7 +112,7 @@ namespace BC
 
         private void CreateGem()
         {
-            //내일 작성
+            ItemManager.Instance.CreateSceneItem(curSlime.rewardGem, transform.position);
         }
 
         private void SlimeJump()
@@ -140,6 +126,15 @@ namespace BC
             }
         }
 
+        public Item ItemRequest()
+        {
+            return curSlime;
+        }
+
+        public void ItemReturn()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
 
