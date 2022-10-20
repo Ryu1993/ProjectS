@@ -108,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8113700617923834960}
   - component: {fileID: 8113700617923834961}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,8 +144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2911733e48749c6842fcb987b16f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitsTransform: []
+  crop: {fileID: 0}
   plant: {fileID: 0}
+  growTime: 0
 --- !u!1001 &8113700618771395219
 PrefabInstance:
   m_ObjectHideFlags: 0

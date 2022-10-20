@@ -20,6 +20,7 @@ public class SceneItem : MonoBehaviour,IInteraction,IPoolingable,IItemable
     public void ItemSetting(Item item)
     {
         if (item as Slime != null) return;
+        Debug.Log(item);
         curItem = item;
         m_Filter.mesh = item.itemMesh;
         m_Renderer.material = item.itemMaterilal;
