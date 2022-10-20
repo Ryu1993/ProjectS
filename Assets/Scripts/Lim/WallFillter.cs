@@ -20,9 +20,9 @@ public class WallFillter : MonoBehaviour
         {
             return;
         }
-        if(other.transform.parent == slimeFarm.transform)
+        if(other.transform.parent == slimeFarm.InsideObject.transform)
         {
-        Rigidbody rb = other.GetComponent<Rigidbody>();
+            Rigidbody rb = other.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 Vector3 opposite = Vector3.Reflect(rb.velocity, transform.up);
@@ -32,7 +32,7 @@ public class WallFillter : MonoBehaviour
         }
         else
         {
-            other.transform.parent = slimeFarm.transform;
+            other.transform.parent = slimeFarm.InsideObject.transform;
         }
     }
 }

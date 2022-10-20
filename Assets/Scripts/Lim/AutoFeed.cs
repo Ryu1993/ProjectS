@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CropsCount
-{
-    public Crop crop;
-    public int count;
-}
-
 public class AutoFeed : MonoBehaviour
 {
     [SerializeField]
@@ -20,13 +14,15 @@ public class AutoFeed : MonoBehaviour
     [SerializeField]
     private Transform cropsInputTransform;
 
+    private SlimeFarm slimeFarm;
     private Crop crop;
-    private int count;
+    private int count = 0;
     private float coolTime = 5f;
     private bool isCoolTime = false;
 
     private void Start()
     {
+        slimeFarm = GetComponentInParent<SlimeFarm>();
         StartCoroutine(CheckCoolTime(coolTime));
     }
 
@@ -42,7 +38,16 @@ public class AutoFeed : MonoBehaviour
             return;
         for (int i = 0; i < feedCount; i++)
         {
-            //오브젝트 풀링 소환
+            if (count <= 0)
+            {
+                crop = null;
+                break;
+            }
+            Transform cropTranform = ItemManager.Instance.CreateSceneItem(crop, feedTransform.position);
+            Rigidbody cropRigidbody = cropTranform.GetComponent<Rigidbody>();
+            cropTranform.parent = slimeFarm.InsideObject.transform;
+            cropRigidbody.AddForce(cropTranform.forward);
+            count--;
         }
     }
 
@@ -53,13 +58,21 @@ public class AutoFeed : MonoBehaviour
         {
             for (int i = 0; i < colliders.Length; i++)
             {
-                //배열 찾기
-                //아이템 저장
+                Crop targetCrop = colliders[i].GetComponent<Crop>();
+                if(crop == null)
+                {
+                    crop = targetCrop;
+                }
+                if (crop != targetCrop)
+                    return;
+                count++;
                 colliders[i].TryGetComponent(out IPoolingable target);
                 target.home.Return(colliders[i].gameObject);
             }
         }
     }
+
+    //진공팩 상호작용(빨아들일때) 저장된 먹이 배출
     IEnumerator CheckCoolTime(float value)
     {
         while (true)
