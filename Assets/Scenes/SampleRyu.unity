@@ -361,8 +361,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneGem: {fileID: 2798508974380680363, guid: 08105fd1c8253da48b5441957a9f1137, type: 3}
-  sceneCrop: {fileID: 0}
-  scenePlant: {fileID: 0}
+  sceneCrop: {fileID: -8860478006908588430, guid: 1a3a9497f294f483386d4aadca56b631, type: 3}
+  scenePlant: {fileID: 8113700617923834961, guid: ea1c2480fc907479e86cc32a73ad0e22, type: 3}
 --- !u!4 &617481672
 Transform:
   m_ObjectHideFlags: 0
