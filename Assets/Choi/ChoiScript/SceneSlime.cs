@@ -32,13 +32,15 @@ namespace BC
                 }
             }
         }
+
+        public Rigidbody rigi { get ; set ; }
+
         private float speed;
         private float jumpPower;
 
         public float size;
 
         private Coroutine hungryCheck;
-        private Rigidbody slimeBody;
         private NavMeshAgent agent;
 
         [SerializeField]
@@ -57,7 +59,7 @@ namespace BC
             speed = curSlime.speed;
             jumpPower = curSlime.jumpPower;
 
-            slimeBody = GetComponent<Rigidbody>();
+            rigi = GetComponent<Rigidbody>();
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             //외형 추가
