@@ -10,11 +10,15 @@ public class SceneCrop : SceneItem
     [SerializeField]
     private Plant plant;
     public Plant Plant { get { return plant; } set { plant = value; } }
-    private MeshCollider meshCollider;
+    private SphereCollider meshCollider;
 
+    private void Start()
+    {
+        meshCollider = GetComponent<SphereCollider>();
+    }
     private void OnEnable()
     {
-        meshCollider = GetComponent<MeshCollider>();
+        
         StartCoroutine(SettingDelay());
     }
 
@@ -28,8 +32,7 @@ public class SceneCrop : SceneItem
         yield return new WaitForSeconds(0.1f);
         Plant = Crop.Plant;
         ItemSetting(Crop);
-        meshCollider.sharedMesh = null;
-        meshCollider.sharedMesh = Crop.itemMesh;
+        //meshCollider = ;
     }
 
 }

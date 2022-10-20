@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4000011252979702}
   - component: {fileID: 33000012709318638}
   - component: {fileID: 23000014099545306}
-  - component: {fileID: 64000010732564900}
+  - component: {fileID: 8325085609458653709}
   m_Layer: 0
   m_Name: SY_Tomato_Fruit
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64000010732564900
-MeshCollider:
+--- !u!135 &8325085609458653709
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +94,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300008, guid: b69b26c8b73b8bd49bf243bbe541a2e0, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.09087588
+  m_Center: {x: -0.0026634, y: 0.0012631342, z: -0.082375735}
