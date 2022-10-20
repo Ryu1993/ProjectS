@@ -16,7 +16,7 @@ MonoBehaviour:
   _itemSprite: {fileID: 0}
   _itemMesh: {fileID: 4300012, guid: b69b26c8b73b8bd49bf243bbe541a2e0, type: 3}
   _itemMaterial: {fileID: 2100000, guid: a46349869de82824ba02d48aa61e68f7, type: 2}
-  _growTime: 2
+  _growTime: 3
   _discardTime: 5
-  _plantCount: 1
+  _plantCount: 3
   fruit: {fileID: 11400000, guid: 48c5c4a15037d4a2ab38be39d1807391, type: 2}
