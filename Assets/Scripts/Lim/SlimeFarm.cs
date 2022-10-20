@@ -9,9 +9,13 @@ public class SlimeFarm : MonoBehaviour
     private bool musicBoxUpgrade = false;
     private bool autoGemUpgrade = false;
     private bool autoFeedUpgrade = false;
+    [SerializeField]
+    private GameObject insideObject;
+    public GameObject InsideObject { get { return insideObject; } set { insideObject = value; } }
 
     private void Start()
     {
+        
         //슬라임 우리로 변경함수 추가
     }
 
