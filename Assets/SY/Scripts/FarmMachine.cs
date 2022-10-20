@@ -11,15 +11,16 @@ public class FarmMachine : MonoBehaviour
     public float detectRange;
     private bool isPlanted = false;
     [SerializeField]
-    private Transform[] plantArea;
-    private bool[] isPlanteds;
+    public List<Transform> plantArea = new List<Transform>();
     private float growTime;
     private float bornTime;
     private bool isWater;
+    public Crop tempCrop;
 
-    private void Awake()
+    private void Start()
     {
-        
+        // ResetValue();
+        ItemManager.Instance.CreateSceneItem(tempCrop, new Vector3(7f, 23f, -28f));
     }
 
     private void Update()
@@ -98,16 +99,21 @@ public class FarmMachine : MonoBehaviour
 
     public void Plant(SceneCrop crop)
     {
-        Transform[] tempArea;
-        int randomIndex;
-        tempArea = plantArea;
-
-        for (int i = 0; i < crop.Plant.plantCount; i++)
+        if (isPlanted == false)
         {
-            randomIndex = Random.Range(0, tempArea.Length);
-            ItemManager.Instance.CreateScenePlant(crop.Plant, plantArea[randomIndex].position);
+            for (int i = 0; i < plantArea.Count - crop.Plant.plantCount; i++)
+            {
+                int randomIndex = Random.Range(0, plantArea.Count);
+                plantArea.RemoveAt(randomIndex);
+            }
+
+            for (int i = 0; i < crop.Plant.plantCount; i++)
+            {
+                ItemManager.Instance.CreateScenePlant(crop.Plant, plantArea[i].position);
+            }
+            isPlanted = true;
         }
-        
+
     }
 
     public void OnDrawGizmosSelected()
@@ -116,8 +122,14 @@ public class FarmMachine : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position + machineHeight, detectRange);
     }
 
-    public void ResetBool()
-    {
-        //for(int i = 0; i < isPlanted.)
-    }
+    //public void ResetValue()
+    //{
+    //    for(int i = 0; i < plantArea.Length; i++)
+    //    {
+    //        randomList[i] = i;
+    //    }
+    //}
+
+
+  
 }
