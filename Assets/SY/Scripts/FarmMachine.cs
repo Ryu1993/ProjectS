@@ -95,6 +95,7 @@ public class FarmMachine : MonoBehaviour
         CropManager.Instance.timeChange -= TimeChange;
         isPlanted = false;
         bornTime = 0;
+        growTime = 0;
     }
 
     public void Plant(SceneCrop crop)
