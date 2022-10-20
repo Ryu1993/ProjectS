@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T instance; // TÅ¸ÀÔ Àü¿ªº¯¼ö instance;
-    public static T Instance // À§ÀÇ TÅ¸ÀÔ Àü¿ªº¯¼ö instance¿¡ ´ëÇÑ ÇÁ·ÎÆÛÆ¼
+    private static T instance; // Tíƒ€ì… ì „ì—­ë³€ìˆ˜ instance
+    public static T Instance // ìœ„ì˜ Tíƒ€ì… ì „ì—­ë³€ìˆ˜ instanceì— ëŒ€í•œ í”„ë¡œí¼í‹°
     {
         get 
         {
-            if(instance == null)//instance°¡ ºñ¾îÀÖÀ» °æ¿ì
+            if(instance == null)//instanceê°€ ë¹„ì–´ìˆì„ ê²½ìš°
             {
-                instance = FindObjectOfType(typeof(T)) as T; //ÇöÀç È°¼ºÈ­µÈ ÄÄÆ÷³ÍÆ®Áß TÅ¸ÀÔ ÄÄÆ÷³ÍÆ®¸¦ °¡Áø ¿ÀºêÁ§Æ®¸¦ Ã£¾Æ¼­ TÅ¸ÀÔÀ¸·Î Çüº¯È¯ ÈÄ ´ëÀÔ.
-                if (instance == null) // TÅ¸ÀÔ ÄÄÆ÷³ÍÆ®¸¦ °¡Áø ¿ÀºêÁ§Æ®°¡ ¾ø¾î¼­ ¿©ÀüÈ÷ null»óÅÂÀÏ °æ¿ì
+                instance = FindObjectOfType(typeof(T)) as T; //í˜„ì¬ í™œì„±í™”ëœ ì»´í¬ë„ŒíŠ¸ ì¤‘ Tíƒ€ì… ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì•„ì„œ Tíƒ€ì…ìœ¼ë¡œ í˜•ë³€í™˜ í›„ ëŒ€ì…
+                if (instance == null) // Tíƒ€ì… ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ê°€ ì—†ì–´ì„œ ì—¬ì „íˆ nullìƒíƒœì¼ ê²½ìš°
                 {
-                    instance = new GameObject(typeof(T).Name).AddComponent<T>();//TÅ¸ÀÔ ÀÌ¸§À» °¡Áø Object¸¦ »ı¼º, Object¿¡ TÅ¸ÀÔ ÄÄÆ÷³ÍÆ®¸¦ Ãß°¡ÈÄ ´ëÀÔ.
+                    instance = new GameObject(typeof(T).Name).AddComponent<T>();//Tíƒ€ì… ì´ë¦„ì„ ê°€ì§„ Objectë¥¼ ìƒì„±, Objectì— Tíƒ€ì… ì»´í¬ë„ŒíŠ¸ë¥¼ ì¶”ê°€ í›„ ëŒ€ì…
                 }
             }
             return instance;            

@@ -15,7 +15,7 @@ public class ObjectPool
     private AsyncOperationHandle m_baseObjHandle;
 
 
-    // ObjectPool »ı¼ºÀÚ, »ı¼º½Ã ÀÔ·Â¹ŞÀº´ë·Î ¼¼ÆÃ ÈÄ ÃÊ±â°ª¸¸Å­ Ç®À» Ã¤¿îÈÄ ObjectPoolÀ» ¹İÈ¯
+    // ObjectPool ìƒì„±ì, ìƒì„±ì‹œ ì…ë ¥ë°›ì€ëŒ€ë¡œ ì„¸íŒ… í›„ ì´ˆê¸°ê°’ë§Œí¼ í’€ì„ ì±„ìš´ í›„ ObjectPoolì„ ë°˜í™˜
     public ObjectPool(GameObject baseObj, int start, int add, Transform inactive,Transform active) 
     {
         m_baseObj = baseObj;
@@ -25,13 +25,13 @@ public class ObjectPool
         PoolAdd(start);
     }
 
-    //baseObj°¡ Addressable·Î ·ÎµåÇßÀ»°æ¿ì ¸Ş¸ğ¸® °ü¸®¸¦ À§ÇÑ AsyncOperationHandle º¸°ü¿ë ¸Ş¼­µå
+    //baseObjê°€ Addressableë¡œ ë¡œë“œí–ˆì„ ê²½ìš° ë©”ëª¨ë¦¬ ê´€ë¦¬ë¥¼ ìœ„í•œ AsyncOperationHandle ë³´ê´€ìš© ë©”ì„œë“œ
     public void HandleSet(ref AsyncOperationHandle<GameObject> handle)
     {
         m_baseObjHandle = handle;
     }
 
-    //ObjectPool¿¡ seed°ª¸¸Å­ baseObjÀÇ º¹Á¦º» »ı¼ºÈÄ º¸°ü. º¹Á¦º» »ı¼º½Ã Ç®¸µ ÀÎÅÍÆäÀÌ½º¸¦ °¡Á®¿Í¼­ »ı¼ºÇÑ ¿ÀºêÁ§Æ® Ç®ÀÇ Á¤º¸¸¦ ÀÔ·Â(ÇØ´ç ¿ÀºêÁ§Æ®°¡ »ı¼ºµÈ Ç®¿¡ ReturnÇÏ±â À§ÇØ ÇÊ¿ä)
+    //ObjectPoolì— seedê°’ë§Œí¼ baseObjì˜ ë³µì œë³¸ ìƒì„±í›„ ë³´ê´€, ë³µì œë³¸ ìƒì„±ì‹œ í’€ë§ ì¸í„°í˜ì´ìŠ¤ë¥¼ ê°€ì ¸ì™€ì„œ ìƒì„±í•œ ì˜¤ë¸Œì íŠ¸ í’€ì˜ ì •ë³´ë¥¼ ì…ë ¥(í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ê°€ ìƒì„±ëœ í’€ì— Returní•˜ê¸° ìœ„í•´ í•„ìš”)
     private void PoolAdd(int seed)
     {
         for(int i = 0; i < seed; i++)
@@ -43,7 +43,7 @@ public class ObjectPool
         }
     }
 
-    //ObjectPool¿¡ Return½ÃÅ´. »ı¼º½Ã ÀÔ·ÂÇÑ ObjectPool¿¡ ´ëÇÑ Á¤º¸·Î È£ÃâÇØ¼­ ¹İÈ¯ÇÒ ¼ö ÀÖµµ·Ï publicÀ¸·Î ¼±¾ğ
+    //ObjectPoolì— Returnì‹œí‚´. ìƒì„±ì‹œ ì…ë ¥í•œ ObjectPoolì— ëŒ€í•œ ì •ë³´ë¡œ í˜¸ì¶œí•´ì„œ ë°˜í™˜í•  ìˆ˜ ìˆë„ë¡ publicìœ¼ë¡œ ì„ ì–¸
     public void Return(GameObject go)
     {
         go.transform.SetParent(m_inactive,false);
@@ -51,7 +51,7 @@ public class ObjectPool
         m_pool.Push(go);
     }
 
-    //ObjectPool¿¡¼­ ¿ÀºêÁ§Æ® È£Ãâ¹× È£Ãâ °ü·Ã ¿À¹ö·Îµù
+    //ObjectPoolì—ì„œ ì˜¤ë¸Œì íŠ¸ í˜¸ì¶œ ë° í˜¸ì¶œ ê´€ë ¨ ì˜¤ë²„ë¡œë”©
     public Transform Call(Vector3 position,Quaternion rotate,Transform parent,bool worldPositonStay,bool isMove)
     {
         if(m_pool.Count == 0)
@@ -81,7 +81,7 @@ public class ObjectPool
     public Transform Call(Vector3 position, Quaternion rotate) => Call(position, rotate, null, false, true);
     public Transform Call(Vector3 position, Transform parent, bool worldPositonStay) => Call(position, Quaternion.identity, parent, worldPositonStay, true);
     public Transform Call(Vector3 position, Quaternion rotate, Transform parent, bool worldPositonStay) => Call(position, rotate, parent, worldPositonStay, true);
-    ~ObjectPool()//GC°¡ ¼öÁıÇÒ¶§ ¸¸¾à baseObj°¡ ¾îµå·¹¼­ºí·Î ¸Ş¸ğ¸®¿¡ ·Îµå½ÃÄ×´Ù¸é °°ÀÌ ÇØÁ¦½ÃÅ°µµ·Ï ÇÔ
+    ~ObjectPool()//GCê°€ ìˆ˜ì§‘í• ë•Œ ë§Œì•½ baseObjê°€ ì–´ë“œë ˆì„œë¸”ë¡œ ë©”ëª¨ë¦¬ì— ë¡œë“œì‹œì¼°ë‹¤ë©´ ê°™ì´ í•´ì œì‹œí‚¤ë„ë¡ í•¨
     {
         Addressables.Release(m_baseObjHandle);
     }
