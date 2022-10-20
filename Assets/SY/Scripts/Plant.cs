@@ -12,8 +12,8 @@ public class Plant : Item
     private float _discardTime;
     public float discardTime { get { return _discardTime; } private set { } }
     [SerializeField]
-    private float _plantCount;
-    public float plantCount { get { return _plantCount; } private set { } }
+    private int _plantCount;
+    public int plantCount { get { return _plantCount; } private set { } }
     [SerializeField]
     private Crop fruit;
     public Crop Fruit { get { return fruit; } private set { } }
