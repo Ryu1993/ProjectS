@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Palmmedia.ReportGenerator.Core.Parser.Filtering;
 using UnityEngine;
 using UnityEngine.Pool;
+using static UnityEngine.GraphicsBuffer;
 
 public class ScenePlant : MonoBehaviour, IPoolingable
 {
@@ -24,19 +26,17 @@ public class ScenePlant : MonoBehaviour, IPoolingable
     {
         meshFilter = GetComponentInChildren<MeshFilter>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
-        
     }
 
     private void OnEnable()
     {
-        Debug.Log("dddd");
         StartCoroutine(SettingDelay());
     }
 
     public void FirstSetting()
     {
         CropManager.Instance.timeChange += TimeChange;
-        crop = Plant.Fruit;
+        Crop = Plant.Fruit;
         isGrow = false;
         bornTime = 0;
         growTime = Plant.growTime;
@@ -63,12 +63,28 @@ public class ScenePlant : MonoBehaviour, IPoolingable
 
     public void MakeFruits()
     {
-        Debug.Log("뿅");
+        //열매 만들때 Crop Plant objectScript넣어주기
+        ItemManager.Instance.CreateSceneItem(crop, transform.position);
+        ItemReturn();
     }
 
     IEnumerator SettingDelay()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         FirstSetting();
     }
+
+    public void ItemReturn()
+    {
+        ItemReset();
+        home.Return(this.gameObject);
+    }
+
+    protected void ItemReset()
+    {
+        //curItem = null;
+        meshFilter.mesh = null;
+        meshRenderer.material = null;
+    }
+
 }
