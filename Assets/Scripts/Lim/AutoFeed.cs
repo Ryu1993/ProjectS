@@ -45,7 +45,7 @@ public class AutoFeed : MonoBehaviour
             }
             Transform cropTranform = ItemManager.Instance.CreateSceneItem(crop, feedTransform.position);
             Rigidbody cropRigidbody = cropTranform.GetComponent<Rigidbody>();
-            cropTranform.parent = slimeFarm.transform;
+            cropTranform.parent = slimeFarm.InsideObject.transform;
             cropRigidbody.AddForce(cropTranform.forward);
             count--;
         }
