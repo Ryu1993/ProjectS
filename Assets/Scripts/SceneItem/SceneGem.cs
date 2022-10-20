@@ -10,4 +10,10 @@ public class SceneGem : SceneItem,ISaleable
         ItemReset();
         home.Return(this.gameObject);
     }
+    protected override void ItemReset()
+    {
+        base.ItemReset();
+        gameObject.layer = 6;
+    }
+
 }
