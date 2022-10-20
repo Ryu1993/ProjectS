@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName =("Item/Slime"))]
 public class Slime : Item
 {
+    public Crop likeFeed;
+    public float hungry;
+    public float speed;
+    public float jumpPower;
     [SerializeField]
     private Gem _rewardGem;
     public Gem rewardGem { get { return _rewardGem; }}
