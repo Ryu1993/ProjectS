@@ -7,6 +7,7 @@ namespace BC
 {
     public class VacuumPack : MonoBehaviour
     {
+        [SerializeField]
         Slot[] slots;
         Slot curSlot;
         int slotIndex;
@@ -66,6 +67,7 @@ namespace BC
         private void SlotChange()
         {
             slotIndex++;
+            Debug.Log("ÇöÀç½½·Ô: " + slotIndex);
             if(slotIndex == slots.Length)
             {
                 slotIndex = 0;
@@ -98,6 +100,7 @@ namespace BC
                     if(slot.curSlotItem == curItem)
                     {
                         slot.ItemCount++;
+                        target.ItemReturn();
                         break;
                     }
                 }
@@ -108,11 +111,13 @@ namespace BC
                         slot.AddItem(curItem);
                         slotRelease[slot] = ReleaseCheck(curItem);
                         slot.ItemCount++;
+                        target.ItemReturn();
                         break;
                     }
                 }
             }
         }
+
 
         private UnityAction ReleaseCheck(Item item)
         { 
