@@ -11,70 +11,62 @@ namespace BC
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(NavMeshAgent))]
-    public class SceneSlime : MonoBehaviour, IInteraction, IItemable
+    public class SceneSlime : MonoBehaviour, IInteraction, IItemable,IPoolingable
     {
         public Slime curSlime;
-        private float hungry;
-        private UnityAction stateAction;
         private Animator animator;
-        private readonly int animationSpeed = Animator.StringToHash("Speed");
-        private readonly int animationJump = Animator.StringToHash("Jump");
-        public float Hungry { get { return hungry; }
-            set
-            {
-                if(value > 600)
-                {
-                    value = 600;
-                }
-                hungry = value;
-                if(hungry > 300)
-                {
-                    FindFeed();
-                }
-            }
-        }
-
-        public Rigidbody rigi { get ; set ; }
-
-        private float speed;
-        private float jumpPower;
-
-        public float size;
-
-        private Coroutine vaccunmCheck;
+        private SkinnedMeshRenderer sliemSkin;
         private NavMeshAgent agent;
-
+        public Rigidbody rigi { get; set; }
+        public ObjectPool home { get; set; }
         [SerializeField]
-        LayerMask groundMask;
-        RaycastHit hit;
+        Face slimeFace;
         [SerializeField]
-        Transform raycastOrigin;
+        private LayerMask groundMask;
+        private RaycastHit hit;
+        [SerializeField]
+        private Transform raycastOrigin;
+        [SerializeField]
+        private LayerMask feedMask;
+        [SerializeField]
+        private LayerMask vacuumMask;
         private Collider[] feedColliders = new Collider[1];
         private Collider[] vacuumColliders = new Collider[1];
-        [SerializeField]
-        LayerMask feedMask;
-        [SerializeField]
-        LayerMask vacuumMask;
+        private float idleCount;
+        private bool isFlying;
+        private bool isReady;
+        private float hungry;
+        private UnityAction vaccumCheck;
+        public UnityAction returnAcition;
 
-        float idleCount;
-        private bool isHolding;
 
-        private void OnEnable()
+        private void Awake()
         {
-            Hungry = curSlime.hungry;
-            speed = curSlime.speed;
-            jumpPower = curSlime.jumpPower;
-
             rigi = GetComponent<Rigidbody>();
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
-            //외형 추가
+            sliemSkin = GetComponentInChildren<SkinnedMeshRenderer>();
+        }
+
+        public void SlimeSet(Slime slime)
+        {
+            curSlime = slime;
+            sliemSkin.sharedMesh = slime.itemMesh;
+            sliemSkin.materials[0] = slime.itemMaterilal;
+            FaceSet(slimeFace.Idleface);
+            hungry = 0;
+            agent.speed = curSlime.speed;
+            isReady = true;
+        }
+        public void FaceSet(Texture tex)
+        {
+            sliemSkin.materials[1].SetTexture(Parameter.mainTex, tex);
         }
         private void FixedUpdate()
         {
-            stateAction?.Invoke();
-            Hungry += 0.02f;
-            animator.SetFloat(animationSpeed, agent.velocity.magnitude);
+            if (!isReady) return;
+            vaccumCheck?.Invoke();
+            animator.SetFloat(Parameter.speed, agent.velocity.magnitude);
             if (agent.remainingDistance < agent.stoppingDistance)
             {
                 idleCount += Time.fixedDeltaTime;
@@ -85,16 +77,23 @@ namespace BC
                 }
                 else
                 {
-                    SlimeJump();
+                    if(hungry>300)
+                    {
+                        FindFeed();
+                    }
+                    else
+                    {
+                        SlimeJump();
+                    }
                 }
             }
         }
 
         private void SlimeMovement()
         {
-            if (isHolding) return;
+            if (isFlying) return;
+            FaceSet(slimeFace.jumpFace);
             raycastOrigin.localRotation = Quaternion.Euler(new Vector3(10, Random.Range(0, 360f), 0));
-            Debug.DrawRay(raycastOrigin.position, raycastOrigin.forward*20);
             if(Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out hit, Mathf.Infinity, groundMask))
             {
                 agent.SetDestination(hit.point);
@@ -103,34 +102,34 @@ namespace BC
 
         private void FindFeed()
         {
+            FaceSet(slimeFace.damageFace);
             feedColliders[0] = null;
             Physics.OverlapSphereNonAlloc(transform.position, 1f, feedColliders, feedMask);
             if(feedColliders[0] != null)
             {
-                if (feedColliders[0].TryGetComponent(out IEatable feed))
+                if (feedColliders[0].TryGetComponent(out SceneCrop feed))
                 {
-                    if(feed.CropRequest()==curSlime.likeFeed)
+                    if(feed.Crop==curSlime.likeFeed)
                     {
-                        feed.home.Return(feedColliders[0].gameObject);
+                        feed.ItemReturn();
                         hungry += 150;
                         CreateGem();
                     }
                 }
             }
         }
-
         private void CreateGem()
         {
             ItemManager.Instance.CreateSceneItem(curSlime.rewardGem, transform.position);
         }
-
         private void SlimeJump()
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).tagHash != animationJump)
+            if (animator.GetCurrentAnimatorStateInfo(0).tagHash != Parameter.jump)
             {
                 if (Random.Range(0, 100) > 98)
                 {
-                    animator.SetTrigger(animationJump);
+                    animator.SetTrigger(Parameter.jump);
+                    FaceSet(slimeFace.jumpFace);
                 }
             }
         }
@@ -142,36 +141,27 @@ namespace BC
 
         public void ItemReturn()
         {
-            throw new System.NotImplementedException();
+            isReady = false;
+            returnAcition?.Invoke();
+            home.Return(this.gameObject);
         }
 
         public void MoveStop()
         {
-            if (vaccunmCheck != null) return;
-            vaccunmCheck = StartCoroutine(NavMeshCheck());
-        }
-
-        private IEnumerator NavMeshCheck()
-        {
-            isHolding = true;
+            isFlying = true;
             rigi.isKinematic = false;
             agent.ResetPath();
-            yield return new WaitUntil(() => VacuumCheck());
-            yield return new WaitUntil(() => agent.isOnNavMesh);
-            rigi.isKinematic = true;
-            isHolding = false;
-            vaccunmCheck = null;
+            vaccumCheck = VacuumCheck;
         }
-
-        private bool VacuumCheck()
+        private void VacuumCheck()
         {
             vacuumColliders[0] = null;
             Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.27f, 0), 0.35f, vacuumColliders, vacuumMask, QueryTriggerInteraction.Collide);
-            if (vacuumColliders[0]==null)
-            {
-                return true;
-            }
-            return false;
+            if (vacuumColliders[0] != null) return;
+            if (!agent.isOnNavMesh) return;
+            rigi.isKinematic = true;
+            isFlying = false;
+            vaccumCheck = null;
         }
 
     }
