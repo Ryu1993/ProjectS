@@ -22,11 +22,6 @@ public class SceneCrop : SceneItem
         StartCoroutine(SettingDelay());
     }
 
-    public void Grow()
-    {
-
-    }
-
     IEnumerator SettingDelay()
     {
         yield return new WaitForSeconds(0.1f);
