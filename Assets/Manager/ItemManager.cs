@@ -46,10 +46,11 @@ public class ItemManager : Singleton<ItemManager>
         temp.GetComponent<SceneCrop>().Crop = crop;
         return temp;
     }
-    public void CreateScenePlant(Plant plant, Vector3 position)
+    public Transform CreateScenePlant(Plant plant, Vector3 position)
     {
         Transform temp = plantObjectPool.Call(position);
         temp.GetComponent<ScenePlant>().Plant = plant;
+        return temp;
     }
     public Transform CreateSceneItem(Slime slime, Vector3 position)
     {
