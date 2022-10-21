@@ -13,8 +13,7 @@ namespace BC
         int slotIndex;
         [SerializeField]
         float releasePower;
-        [SerializeField]
-        private MeshRenderer modeCheckRenderer;
+        
         [SerializeField]
         private Collider[] vacuumPackColliders;
         public enum TYPE { slime, item }
@@ -23,10 +22,6 @@ namespace BC
         private MODE mode = MODE.absorption;
         Dictionary<Slot, UnityAction> slotRelease = new Dictionary<Slot, UnityAction>();
    
-        private void Start()
-        {
-            modeCheckRenderer.material.color = Color.red;
-        }
         private void Update()
         {
             ChangeMode();
@@ -54,12 +49,10 @@ namespace BC
                 if(mode == MODE.release)
                 {
                     mode = MODE.absorption;
-                    modeCheckRenderer.material.color = Color.red;
                 }
                 else if( mode == MODE.absorption)
                 {
                     mode = MODE.release;
-                    modeCheckRenderer.material.color = Color.green;
                 }
             }
         }

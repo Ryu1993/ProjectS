@@ -56,6 +56,7 @@ namespace BC
             FaceSet(slimeFace.Idleface);
             hungry = 0;
             agent.speed = curSlime.speed;
+            SlimeMovement();
             isReady = true;
         }
         public void FaceSet(Texture tex)
@@ -64,11 +65,13 @@ namespace BC
         }
         private void FixedUpdate()
         {
-            if (!isReady) return;
+         
             vaccumCheck?.Invoke();
             animator.SetFloat(Parameter.speed, agent.velocity.magnitude);
-            if (agent.remainingDistance < agent.stoppingDistance)
+            Debug.Log(agent.remainingDistance + " : " + agent.stoppingDistance);
+            if (agent.remainingDistance <= agent.stoppingDistance)
             {
+                Debug.Log("move");
                 idleCount += Time.fixedDeltaTime;
                 if(idleCount>5f)
                 {
