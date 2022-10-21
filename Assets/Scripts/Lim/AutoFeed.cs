@@ -64,7 +64,7 @@ public class AutoFeed : MonoBehaviour
                     crop = targetCrop;
                 }
                 if (crop != targetCrop)
-                    return;
+                    continue;
                 count++;
                 colliders[i].TryGetComponent(out IPoolingable target);
                 target.home.Return(colliders[i].gameObject);
@@ -72,7 +72,20 @@ public class AutoFeed : MonoBehaviour
         }
     }
 
-    //진공팩 상호작용(빨아들일때) 저장된 먹이 배출
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Vacuum")
+        {
+            StartCoroutine(SummonCrop());
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.tag == "Vacuum")
+        {
+            StopCoroutine(SummonCrop());
+        }
+    }
     IEnumerator CheckCoolTime(float value)
     {
         while (true)
@@ -82,5 +95,19 @@ public class AutoFeed : MonoBehaviour
             yield return new WaitForSeconds(value);
             isCoolTime = false;
         }
+    }
+    IEnumerator SummonCrop()
+    {
+        while(count > 0)
+        {
+            ItemManager.Instance.CreateSceneItem(crop, transform.position);
+            count--;
+            if(count <=0)
+            {
+                crop = null;
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield return null;
     }
 }

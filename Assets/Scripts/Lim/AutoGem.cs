@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
+[Serializable]
 public class GemsCount
 {
     public Gem gem = null;
@@ -17,13 +20,15 @@ public class AutoGem : MonoBehaviour
     [SerializeField]
     private Vector3 boxSize;
     private float coolTime = 5f;
+    private int slotCount = 2;
+    private int totalCount = 0;
     private bool isCoolTime = false;
+    [SerializeField]
     private List<GemsCount> gems;
-
     private void Start()
     {
+        gems = new List<GemsCount>(slotCount);
         StartCoroutine(CheckCoolTime(coolTime));
-        gems = new List<GemsCount>(2);
     }
     private void Update()
     {
@@ -46,6 +51,7 @@ public class AutoGem : MonoBehaviour
                 if(check)
                 {
                     target.home.Return(colliders[i].gameObject);
+                    totalCount++;
                 }
             }
         }
@@ -53,112 +59,58 @@ public class AutoGem : MonoBehaviour
 
     private bool CheckGemSlot(Gem gem)
     {
-        for (int i = 0; i < gems.Count; i++)
+        if(gems.Count == 0)
         {
-            if (gems[i].gem != null)
-            {
-                if (gems[i].gem == gem)
-                {
-
-                }
-            }
-        }
-        if (gems[0].gem == null && gems[1].gem == null)
-        {
+            gems.Add(new GemsCount());
             gems[0].gem = gem;
             gems[0].count++;
             return true;
         }
-        else if (gems[0].gem != null && gems[1].gem == null)
+        else if (gems.Count < slotCount)
         {
-            if (gems[0].gem == gem)
+            for (int i = 0; i < gems.Count; i++)
             {
-                if (gems[0].count < 100)
-                {
-                    gems[0].count++;
-                    return true;
-                }
-                else
-                {
-                    gems[1].gem = gem;
-                    gems[1].count++;
-                    return true;
-                }
+                if (gems[i].gem != gem)
+                    continue;
+                if (gems[i].count >= 100)
+                    continue;
+                gems[i].count++;
+                return true;
             }
+            gems.Add(new GemsCount());
+            gems[gems.Count - 1].gem = gem;
+            gems[gems.Count - 1].count++;
+            return true;
         }
-        else if (gems[0].gem == null && gems[1].gem != null)
+        else if (gems.Count == slotCount)
         {
-            if (gems[1].gem == gem)
+            for (int i = 0; i < gems.Count; i++)
             {
-                if (gems[1].count<100)
-                {
-                    gems[1].count++;
-                    return true;
-                }
-                else
-                {
-                    gems[0].gem = gem;
-                    gems[0].count++;
-                    return true;
-                }
+                if (gems[i].gem != gem)
+                    continue;
+                if (gems[i].count >= 100)
+                    continue;
+                gems[i].count++;
+                return true;
             }
-        }
-        else if (gems[0].gem != null && gems[1].gem != null)
-        {
-            if (gems[0].gem == gem)
-            {
-                if (gems[0].count<100)
-                {
-                    gems[0].count++;
-                    return true;
-                }
-                else
-                {
-                    if (gems[1].gem == gem)
-                    {
-                        if (gems[1].count<100)
-                        {
-                            gems[1].count++;
-                            return true;
-                        }
-                        else
-                        {
-
-                        }
-                    }
-                }
-            }
-            else if (gems[1].gem == gem)
-            {
-                if (gems[1].count < 100)
-                {
-                    gems[1].count++;
-                    return true;
-                }
-                else
-                {
-                    if (gems[0].gem == gem)
-                    {
-                        if (gems[0].count < 100)
-                        {
-                            gems[0].count++;
-                            return true;
-                        }
-                        else
-                        {
-
-                        }
-                    }
-                }
-            }
+            return false;
         }
         return false;
     }
 
-    //상호작용 인터페이스에 저장된 젬 소환기능 추가
-    private void SommonGem()
+    private void OnTriggerEnter(Collider other)
     {
-
+        if(other.gameObject.tag == "Vacuum")
+        {
+            StartCoroutine(SummonGem());
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.tag == "Vacuum")
+        {
+            StopCoroutine(SummonGem());
+        }
     }
 
     IEnumerator CheckCoolTime(float value)
@@ -170,5 +122,21 @@ public class AutoGem : MonoBehaviour
             yield return new WaitForSeconds(value);
             isCoolTime = false;
         }
+    }
+    IEnumerator SummonGem()
+    {
+        while(totalCount>0)
+        {
+            int slotNum = UnityEngine.Random.Range(0, gems.Count);
+            ItemManager.Instance.CreateSceneItem(gems[slotNum].gem, transform.position);
+            gems[slotNum].count--;
+            totalCount--;
+            if (gems[slotNum].count <=0)
+            {
+                gems.RemoveAt(slotNum);
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield return null;
     }
 }
