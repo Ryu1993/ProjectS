@@ -17,6 +17,7 @@ namespace BC
         private Animator animator;
         private SkinnedMeshRenderer sliemSkin;
         private NavMeshAgent agent;
+        public NavMeshAgent Agent { get; private set; }
         public Rigidbody rigi { get; set; }
         public ObjectPool home { get; set; }
         [SerializeField]
