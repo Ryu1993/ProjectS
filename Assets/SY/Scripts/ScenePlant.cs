@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Palmmedia.ReportGenerator.Core.Parser.Filtering;
+using Unity.Services.Analytics.Platform;
 using UnityEngine;
 using UnityEngine.Pool;
 using static UnityEngine.GraphicsBuffer;
@@ -13,13 +14,13 @@ public class ScenePlant : MonoBehaviour, IPoolingable
     [SerializeField]
     private Plant plant;
     public Plant Plant { get { return plant; }  set { plant = value; } }
-    //private float growTime;
     private float bornTime;
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
     private bool isGrow;
+    public bool isWater;
     public float growTime;
-
+    public float rotTime;
     public ObjectPool home { get; set; }
 
     private void Awake()
@@ -31,6 +32,7 @@ public class ScenePlant : MonoBehaviour, IPoolingable
     private void OnEnable()
     {
         StartCoroutine(SettingDelay());
+        isWater = false;
     }
 
     public void FirstSetting()
@@ -44,27 +46,38 @@ public class ScenePlant : MonoBehaviour, IPoolingable
 
     public void TimeChange()
     {
-        bornTime++;
-        if(isGrow == false)
+        if(isWater == true)
         {
-            isGrow = true;
-            meshFilter.mesh = plant.itemMesh;
-            meshRenderer.material = plant.itemMaterilal;
-        }
-        if (bornTime < growTime)
-        {
-            return;
+            rotTime = 0;
+            isWater = false;
+            if (isGrow == false) //식물 자라게
+            {
+                isGrow = true;
+                meshFilter.mesh = plant.itemMesh;
+                meshRenderer.material = plant.itemMaterilal;
+            }
+            else
+            {
+                bornTime++;
+                if (bornTime < growTime)
+                {
+                    return;
+                }
+                else
+                {
+                    MakeFruits();
+                }
+            }
         }
         else
         {
-            MakeFruits();
-        }
+            RotPlant();
+        } 
     }
-
+    
     public void MakeFruits()
     {
-        //열매 만들때 Crop Plant objectScript넣어주기
-        ItemManager.Instance.CreateSceneItem(crop, transform.position);
+        ItemManager.Instance.CreateSceneItem(crop, transform.position + new Vector3 (0, 1f,0f));
         ItemReturn();
     }
 
@@ -80,9 +93,23 @@ public class ScenePlant : MonoBehaviour, IPoolingable
         home.Return(this.gameObject);
     }
 
+    //시간이 지나면 식물이 썩는 함수
+    public void RotPlant()
+    {
+        rotTime++;
+        if(rotTime > Plant.discardTime)
+        {
+            ItemReturn();
+        }
+    }
+
     protected void ItemReset()
     {
-        //curItem = null;
+        CropManager.Instance.timeChange -= TimeChange;
+        growTime = 0;
+        bornTime = 0;
+        rotTime = 0;
+        isGrow = false;
         meshFilter.mesh = null;
         meshRenderer.material = null;
     }
