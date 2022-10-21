@@ -28,7 +28,7 @@ public class UIEventFunc : MonoBehaviour
     }
     public void ShowInfo()
     {
-        //업그레이드 정보 보여주기
+        
     }
     public void BuyUpgrade()
     {
