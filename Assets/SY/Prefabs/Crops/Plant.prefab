@@ -144,8 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2911733e48749c6842fcb987b16f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crop: {fileID: 0}
-  plant: {fileID: 0}
+  crop: {fileID: 11400000, guid: 30b68dc4d16ff06468f86a1dc5386c52, type: 2}
+  plant: {fileID: 11400000, guid: 584074cfec9fcc7439aff1f04db1f2e0, type: 2}
   growTime: 0
 --- !u!1001 &8113700618771395219
 PrefabInstance:

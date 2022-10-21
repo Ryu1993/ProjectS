@@ -32,7 +32,6 @@ public class ScenePlant : MonoBehaviour, IPoolingable
     {
         StartCoroutine(SettingDelay());
     }
-
     public void FirstSetting()
     {
         CropManager.Instance.timeChange += TimeChange;

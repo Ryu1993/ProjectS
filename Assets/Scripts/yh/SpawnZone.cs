@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpawnZone : MonoBehaviour
 {
+    [SerializeField]
+    LayerMask groundMask;
     public ObjectPoolCall objectPoolCall;
     Vector3 hitPosition;
     Vector3 randomPosition;
@@ -21,8 +23,9 @@ public class SpawnZone : MonoBehaviour
         randomPosition = new Vector3(range_x, transform.position.y, range_z);
         Ray ray = new Ray(randomPosition, Vector3.down);
         RaycastHit hit;
-        Physics.Raycast(ray, out hit);
+        Physics.Raycast(ray, out hit, groundMask);
         hitPosition = hit.point;
+        hitPosition.y += 0.25f;
         objectPoolCall.spawnPosition = hitPosition;
     }
    
