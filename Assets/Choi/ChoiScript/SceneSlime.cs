@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.AI;
 using UnityEngine.SocialPlatforms;
 using Unity.VisualScripting;
+using TMPro;
 
 namespace BC
 {
@@ -40,7 +41,7 @@ namespace BC
 
         public float size;
 
-        private Coroutine hungryCheck;
+        private Coroutine vaccunmCheck;
         private NavMeshAgent agent;
 
         [SerializeField]
@@ -48,10 +49,15 @@ namespace BC
         RaycastHit hit;
         [SerializeField]
         Transform raycastOrigin;
-        private Collider[] FeedColliders = new Collider[1];
+        private Collider[] feedColliders = new Collider[1];
+        private Collider[] vacuumColliders = new Collider[1];
+        [SerializeField]
         LayerMask feedMask;
+        [SerializeField]
+        LayerMask vacuumMask;
 
         float idleCount;
+        private bool isHolding;
 
         private void OnEnable()
         {
@@ -86,6 +92,7 @@ namespace BC
 
         private void SlimeMovement()
         {
+            if (isHolding) return;
             raycastOrigin.localRotation = Quaternion.Euler(new Vector3(10, Random.Range(0, 360f), 0));
             Debug.DrawRay(raycastOrigin.position, raycastOrigin.forward*20);
             if(Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out hit, Mathf.Infinity, groundMask))
@@ -96,15 +103,15 @@ namespace BC
 
         private void FindFeed()
         {
-            FeedColliders[0] = null;
-            Physics.OverlapSphereNonAlloc(transform.position, 1f, FeedColliders, feedMask);
-            if(FeedColliders[0] != null)
+            feedColliders[0] = null;
+            Physics.OverlapSphereNonAlloc(transform.position, 1f, feedColliders, feedMask);
+            if(feedColliders[0] != null)
             {
-                if (FeedColliders[0].TryGetComponent(out IEatable feed))
+                if (feedColliders[0].TryGetComponent(out IEatable feed))
                 {
                     if(feed.CropRequest()==curSlime.likeFeed)
                     {
-                        feed.home.Return(FeedColliders[0].gameObject);
+                        feed.home.Return(feedColliders[0].gameObject);
                         hungry += 150;
                         CreateGem();
                     }
@@ -137,6 +144,36 @@ namespace BC
         {
             throw new System.NotImplementedException();
         }
+
+        public void MoveStop()
+        {
+            if (vaccunmCheck != null) return;
+            vaccunmCheck = StartCoroutine(NavMeshCheck());
+        }
+
+        private IEnumerator NavMeshCheck()
+        {
+            isHolding = true;
+            rigi.isKinematic = false;
+            agent.ResetPath();
+            yield return new WaitUntil(() => VacuumCheck());
+            yield return new WaitUntil(() => agent.isOnNavMesh);
+            rigi.isKinematic = true;
+            isHolding = false;
+            vaccunmCheck = null;
+        }
+
+        private bool VacuumCheck()
+        {
+            vacuumColliders[0] = null;
+            Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.27f, 0), 0.35f, vacuumColliders, vacuumMask, QueryTriggerInteraction.Collide);
+            if (vacuumColliders[0]==null)
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }
 
