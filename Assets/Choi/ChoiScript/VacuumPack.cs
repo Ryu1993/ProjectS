@@ -7,13 +7,13 @@ namespace BC
 {
     public class VacuumPack : MonoBehaviour
     {
+        [SerializeField]
         Slot[] slots;
         Slot curSlot;
         int slotIndex;
         [SerializeField]
         float releasePower;
-        [SerializeField]
-        private MeshRenderer modeCheckRenderer;
+        
         [SerializeField]
         private Collider[] vacuumPackColliders;
         public enum TYPE { slime, item }
@@ -22,10 +22,6 @@ namespace BC
         private MODE mode = MODE.absorption;
         Dictionary<Slot, UnityAction> slotRelease = new Dictionary<Slot, UnityAction>();
    
-        private void Start()
-        {
-            modeCheckRenderer.material.color = Color.red;
-        }
         private void Update()
         {
             ChangeMode();
@@ -53,12 +49,10 @@ namespace BC
                 if(mode == MODE.release)
                 {
                     mode = MODE.absorption;
-                    modeCheckRenderer.material.color = Color.red;
                 }
                 else if( mode == MODE.absorption)
                 {
                     mode = MODE.release;
-                    modeCheckRenderer.material.color = Color.green;
                 }
             }
         }
@@ -66,6 +60,7 @@ namespace BC
         private void SlotChange()
         {
             slotIndex++;
+            Debug.Log("ÇöÀç½½·Ô: " + slotIndex);
             if(slotIndex == slots.Length)
             {
                 slotIndex = 0;
@@ -98,6 +93,7 @@ namespace BC
                     if(slot.curSlotItem == curItem)
                     {
                         slot.ItemCount++;
+                        target.ItemReturn();
                         break;
                     }
                 }
@@ -108,11 +104,13 @@ namespace BC
                         slot.AddItem(curItem);
                         slotRelease[slot] = ReleaseCheck(curItem);
                         slot.ItemCount++;
+                        target.ItemReturn();
                         break;
                     }
                 }
             }
         }
+
 
         private UnityAction ReleaseCheck(Item item)
         { 

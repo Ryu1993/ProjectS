@@ -45,4 +45,8 @@ public class SceneItem : MonoBehaviour,IInteraction,IPoolingable,IItemable
         home.Return(this.gameObject);
     }
 
+    public void MoveStop()
+    {
+        
+    }
 }
