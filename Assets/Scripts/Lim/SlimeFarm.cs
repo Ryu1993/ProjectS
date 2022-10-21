@@ -12,6 +12,9 @@ public class SlimeFarm : MonoBehaviour
     [SerializeField]
     private GameObject insideObject;
     public GameObject InsideObject { get { return insideObject; } set { insideObject = value; } }
+    [SerializeField]
+    private GameObject upgradeUI;
+    public GameObject UpgradeUI { get { return upgradeUI; } set { upgradeUI = value; } }
 
     private void Start()
     {
