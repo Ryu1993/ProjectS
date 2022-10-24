@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CropsCount
-{
-    public Crop crop;
-    public int count;
-}
-
 public class AutoFeed : MonoBehaviour
 {
     [SerializeField]
@@ -20,13 +14,15 @@ public class AutoFeed : MonoBehaviour
     [SerializeField]
     private Transform cropsInputTransform;
 
+    private SlimeFarm slimeFarm;
     private Crop crop;
-    private int count;
+    private int count = 0;
     private float coolTime = 5f;
     private bool isCoolTime = false;
 
     private void Start()
     {
+        slimeFarm = GetComponentInParent<SlimeFarm>();
         StartCoroutine(CheckCoolTime(coolTime));
     }
 
@@ -42,7 +38,16 @@ public class AutoFeed : MonoBehaviour
             return;
         for (int i = 0; i < feedCount; i++)
         {
-            //오브젝트 풀링 소환
+            if (count <= 0)
+            {
+                crop = null;
+                break;
+            }
+            Transform cropTranform = ItemManager.Instance.CreateSceneItem(crop, feedTransform.position);
+            Rigidbody cropRigidbody = cropTranform.GetComponent<Rigidbody>();
+            cropTranform.parent = slimeFarm.InsideObject.transform;
+            cropRigidbody.AddForce(cropTranform.forward);
+            count--;
         }
     }
 
@@ -53,11 +58,32 @@ public class AutoFeed : MonoBehaviour
         {
             for (int i = 0; i < colliders.Length; i++)
             {
-                //배열 찾기
-                //아이템 저장
+                Crop targetCrop = colliders[i].GetComponent<Crop>();
+                if(crop == null)
+                {
+                    crop = targetCrop;
+                }
+                if (crop != targetCrop)
+                    continue;
+                count++;
                 colliders[i].TryGetComponent(out IPoolingable target);
                 target.home.Return(colliders[i].gameObject);
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Vacuum")
+        {
+            StartCoroutine(SummonCrop());
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.tag == "Vacuum")
+        {
+            StopCoroutine(SummonCrop());
         }
     }
     IEnumerator CheckCoolTime(float value)
@@ -69,5 +95,19 @@ public class AutoFeed : MonoBehaviour
             yield return new WaitForSeconds(value);
             isCoolTime = false;
         }
+    }
+    IEnumerator SummonCrop()
+    {
+        while(count > 0)
+        {
+            ItemManager.Instance.CreateSceneItem(crop, transform.position);
+            count--;
+            if(count <=0)
+            {
+                crop = null;
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield return null;
     }
 }

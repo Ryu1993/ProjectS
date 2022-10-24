@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Palmmedia.ReportGenerator.Core.Parser.Filtering;
+using Unity.Services.Analytics.Platform;
 using UnityEngine;
 using UnityEngine.Pool;
+using static UnityEngine.GraphicsBuffer;
 
 public class ScenePlant : MonoBehaviour, IPoolingable
 {
@@ -11,32 +14,31 @@ public class ScenePlant : MonoBehaviour, IPoolingable
     [SerializeField]
     private Plant plant;
     public Plant Plant { get { return plant; }  set { plant = value; } }
-    //private float growTime;
     private float bornTime;
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
     private bool isGrow;
+    public bool isWater;
     public float growTime;
-
+    public float rotTime;
     public ObjectPool home { get; set; }
 
     private void Awake()
     {
         meshFilter = GetComponentInChildren<MeshFilter>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
-        
     }
 
     private void OnEnable()
     {
-        Debug.Log("dddd");
         StartCoroutine(SettingDelay());
+        isWater = false;
     }
 
     public void FirstSetting()
     {
         CropManager.Instance.timeChange += TimeChange;
-        crop = Plant.Fruit;
+        Crop = Plant.Fruit;
         isGrow = false;
         bornTime = 0;
         growTime = Plant.growTime;
@@ -44,31 +46,72 @@ public class ScenePlant : MonoBehaviour, IPoolingable
 
     public void TimeChange()
     {
-        bornTime++;
-        if(isGrow == false)
+        if(isWater == true)
         {
-            isGrow = true;
-            meshFilter.mesh = plant.itemMesh;
-            meshRenderer.material = plant.itemMaterilal;
-        }
-        if (bornTime < growTime)
-        {
-            return;
+            rotTime = 0;
+            isWater = false;
+            if (isGrow == false) //식물 자라게
+            {
+                isGrow = true;
+                meshFilter.mesh = plant.itemMesh;
+                meshRenderer.material = plant.itemMaterilal;
+            }
+            else
+            {
+                bornTime++;
+                if (bornTime < growTime)
+                {
+                    return;
+                }
+                else
+                {
+                    MakeFruits();
+                }
+            }
         }
         else
         {
-            MakeFruits();
-        }
+            RotPlant();
+        } 
     }
-
+    
     public void MakeFruits()
     {
-        Debug.Log("뿅");
+        ItemManager.Instance.CreateSceneItem(crop, transform.position + new Vector3 (0, 1f,0f));
+        ItemReturn();
     }
 
     IEnumerator SettingDelay()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         FirstSetting();
     }
+
+    public void ItemReturn()
+    {
+        ItemReset();
+        home.Return(this.gameObject);
+    }
+
+    //시간이 지나면 식물이 썩는 함수
+    public void RotPlant()
+    {
+        rotTime++;
+        if(rotTime > Plant.discardTime)
+        {
+            ItemReturn();
+        }
+    }
+
+    protected void ItemReset()
+    {
+        CropManager.Instance.timeChange -= TimeChange;
+        growTime = 0;
+        bornTime = 0;
+        rotTime = 0;
+        isGrow = false;
+        meshFilter.mesh = null;
+        meshRenderer.material = null;
+    }
+
 }

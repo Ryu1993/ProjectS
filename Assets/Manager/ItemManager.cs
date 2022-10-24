@@ -1,3 +1,4 @@
+using BC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,12 +19,14 @@ public class ItemManager : Singleton<ItemManager>
     SceneCrop sceneCrop;
     [SerializeField]
     ScenePlant scenePlant;
-    
+    [SerializeField]
+    SceneSlime sceneSlime;
     private void Awake()
     {
         gemObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneGem.gameObject, 20,10);
         cropObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneCrop.gameObject, 20, 10);
         plantObjectPool = ObjectPoolManager.Instance.PoolRequest(scenePlant.gameObject, 20, 10);
+        slimeObjectPool = ObjectPoolManager.Instance.PoolRequest(sceneSlime.gameObject, 20, 10);
     }
 
     public Transform CreateSceneItem(Item item,Vector3 position,ObjectPool objectPool)
@@ -39,16 +42,21 @@ public class ItemManager : Singleton<ItemManager>
     }
     public Transform CreateSceneItem(Crop crop,Vector3 position)
     {
-        return CreateSceneItem(crop,position,cropObjectPool);
+        Transform temp = cropObjectPool.Call(position);
+        temp.GetComponent<SceneCrop>().Crop = crop;
+        return temp;
     }
-    public void CreateScenePlant(Plant plant, Vector3 position)
+    public Transform CreateScenePlant(Plant plant, Vector3 position)
     {
         Transform temp = plantObjectPool.Call(position);
         temp.GetComponent<ScenePlant>().Plant = plant;
+        return temp;
     }
     public Transform CreateSceneItem(Slime slime, Vector3 position)
     {
-        return null;
+        slimeObjectPool.Call(position).TryGetComponent(out SceneSlime sceneSlime);
+        sceneSlime.SlimeSet(slime);
+        return sceneSlime.transform;
     }
 
 

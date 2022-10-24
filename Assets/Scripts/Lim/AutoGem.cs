@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
+[Serializable]
 public class GemsCount
 {
-    public Gem gem;
-    public int count;
+    public Gem gem = null;
+    public int count = 0;
 }
 
 public class AutoGem : MonoBehaviour
@@ -17,11 +20,14 @@ public class AutoGem : MonoBehaviour
     [SerializeField]
     private Vector3 boxSize;
     private float coolTime = 5f;
+    private int slotCount = 2;
+    private int totalCount = 0;
     private bool isCoolTime = false;
-    private GemsCount[] gems;
-
+    [SerializeField]
+    private List<GemsCount> gems;
     private void Start()
     {
+        gems = new List<GemsCount>(slotCount);
         StartCoroutine(CheckCoolTime(coolTime));
     }
     private void Update()
@@ -39,15 +45,73 @@ public class AutoGem : MonoBehaviour
         {
             for (int i = 0; i < colliders.Length; i++)
             {
-                //배열 찾기
-                //젬 저장
-                colliders[i].TryGetComponent(out IPoolingable target);
-                target.home.Return(colliders[i].gameObject);
+                colliders[i].TryGetComponent(out SceneGem target);
+                Gem gem = target.ItemRequest() as Gem;
+                bool check = CheckGemSlot(gem);
+                if(check)
+                {
+                    target.home.Return(colliders[i].gameObject);
+                    totalCount++;
+                }
             }
         }
     }
 
-    //상호작용 인터페이스에 저장된 젬 소환기능 추가
+    private bool CheckGemSlot(Gem gem)
+    {
+        if(gems.Count == 0)
+        {
+            gems.Add(new GemsCount());
+            gems[0].gem = gem;
+            gems[0].count++;
+            return true;
+        }
+        else if (gems.Count < slotCount)
+        {
+            for (int i = 0; i < gems.Count; i++)
+            {
+                if (gems[i].gem != gem)
+                    continue;
+                if (gems[i].count >= 100)
+                    continue;
+                gems[i].count++;
+                return true;
+            }
+            gems.Add(new GemsCount());
+            gems[gems.Count - 1].gem = gem;
+            gems[gems.Count - 1].count++;
+            return true;
+        }
+        else if (gems.Count == slotCount)
+        {
+            for (int i = 0; i < gems.Count; i++)
+            {
+                if (gems[i].gem != gem)
+                    continue;
+                if (gems[i].count >= 100)
+                    continue;
+                gems[i].count++;
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Vacuum")
+        {
+            StartCoroutine(SummonGem());
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.tag == "Vacuum")
+        {
+            StopCoroutine(SummonGem());
+        }
+    }
 
     IEnumerator CheckCoolTime(float value)
     {
@@ -58,5 +122,21 @@ public class AutoGem : MonoBehaviour
             yield return new WaitForSeconds(value);
             isCoolTime = false;
         }
+    }
+    IEnumerator SummonGem()
+    {
+        while(totalCount>0)
+        {
+            int slotNum = UnityEngine.Random.Range(0, gems.Count);
+            ItemManager.Instance.CreateSceneItem(gems[slotNum].gem, transform.position);
+            gems[slotNum].count--;
+            totalCount--;
+            if (gems[slotNum].count <=0)
+            {
+                gems.RemoveAt(slotNum);
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield return null;
     }
 }

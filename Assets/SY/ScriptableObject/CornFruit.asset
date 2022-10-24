@@ -16,5 +16,5 @@ MonoBehaviour:
   _itemSprite: {fileID: 0}
   _itemMesh: {fileID: 4300014, guid: b69b26c8b73b8bd49bf243bbe541a2e0, type: 3}
   _itemMaterial: {fileID: 2100000, guid: bd3ac3aaa239ebf4396eb261af13874d, type: 2}
-  _growTime: 2
-  _discardTime: 0
+  _discardTime: 3
+  plant: {fileID: 11400000, guid: fff56e530f9ef406f8bed9b33875c16b, type: 2}

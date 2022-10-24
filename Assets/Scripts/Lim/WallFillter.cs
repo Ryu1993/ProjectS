@@ -1,7 +1,9 @@
+using BC;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WallFillter : MonoBehaviour
 {
@@ -20,9 +22,15 @@ public class WallFillter : MonoBehaviour
         {
             return;
         }
-        if(other.transform.parent == slimeFarm.transform)
+        if(other.transform.parent == slimeFarm.InsideObject.transform)
         {
-        Rigidbody rb = other.GetComponent<Rigidbody>();
+            Rigidbody rb = other.GetComponent<Rigidbody>();
+            if(other.TryGetComponent(out SceneSlime forSlime))
+            {
+                Vector3 opposite = Vector3.Reflect(forSlime.Agent.velocity, transform.up);
+                forSlime.MoveStop();
+                rb.AddForce(opposite, ForceMode.Impulse);
+            }
             if (rb != null)
             {
                 Vector3 opposite = Vector3.Reflect(rb.velocity, transform.up);
@@ -32,7 +40,7 @@ public class WallFillter : MonoBehaviour
         }
         else
         {
-            other.transform.parent = slimeFarm.transform;
+            other.transform.parent = slimeFarm.InsideObject.transform;
         }
     }
 }
