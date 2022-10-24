@@ -8,7 +8,8 @@ public class UIEventFunc : MonoBehaviour
 {
     public UnityEvent OnClick;
     public UnityEvent OffClick;
-
+    public Upgrade upgrade;
+    private int upgradePrice;
     private bool isClick = false;
 
     public void ActiveFalse(GameObject target)
@@ -28,14 +29,17 @@ public class UIEventFunc : MonoBehaviour
     }
     public void ShowInfo()
     {
-        
+        UIManager.Instance.MachineUI.ShowInfo(upgrade);
     }
+
     public void BuyUpgrade()
     {
-
+        UIManager.Instance.MachineController.BuyUpgrade();
     }
+
     public void ChangeBool(bool value)
     {
         isClick = value;
     }
+
 }

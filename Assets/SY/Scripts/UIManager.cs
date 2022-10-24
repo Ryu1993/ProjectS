@@ -5,6 +5,10 @@ using UnityEngine;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField]
-    private MachineUIController machineUIController;
-    
+    private MachineUI machineUI;
+    public MachineUI MachineUI { get { return machineUI; } set { machineUI = value; } }
+    [SerializeField]
+    private MachineController machineController;
+    public MachineController MachineController { get { return machineController; } set { machineController = value; } }
+
 }
