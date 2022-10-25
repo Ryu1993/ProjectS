@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b8652eabf609347853a9f0a5bc2ba9, type: 3}
   m_Name: AutoGem
   m_EditorClassIdentifier: 
-  upgradeName: asd
-  upgradeInfo: asd
+  upgradeName: AutoGem
+  upgradeInfo: Active AutoGem
   upgradeImage: {fileID: 0}
   requireCoin: 10

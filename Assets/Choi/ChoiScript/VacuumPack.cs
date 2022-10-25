@@ -8,93 +8,94 @@ namespace BC
 {
     public class VacuumPack : MonoBehaviour
     {
-        [SerializeField]
-        ParticleSystem particle;
-        [SerializeField]
-        private Slot[] slots;
+        GameObject particle;
+        private List<Slot> slots = new List<Slot>();
         private Slot curSlot;
-        [SerializeField]
         private int slotIndex;
         [SerializeField]
-        private float releasePower; 
-        [SerializeField]
-        private Collider[] vacuumPackColliders;
-        public enum TYPE { slime, item }
-        private enum MODE { absorption, release }
-        public TYPE type = TYPE.slime;
-        private MODE mode = MODE.absorption;
+        private float releasePower;
+        private Collider[] vacuumPackColliders = new Collider[2];
+        private Transform releasPosition;
+        public bool isSlime;
+        private bool isRelease;
+        private bool isAbsorption;
         private Dictionary<Slot, UnityAction> slotRelease = new Dictionary<Slot, UnityAction>();
-   
+
+        private void Awake()
+        {
+            transform.FindComponentChild(out ParticleSystem particleGo);
+            particle = particleGo.gameObject;
+            vacuumPackColliders[0] = GetComponent<Collider>();      
+            transform.FindComponentChild(out MeshCollider tempColliders);
+            vacuumPackColliders[1] = tempColliders;
+            Transform windowTransform = transform.FindComponentChild<Canvas>().GetChild(0);
+            for(int i=0; i<windowTransform.childCount; i++)
+            {
+                slots.Add(windowTransform.GetChild(i).GetComponent<Slot>());
+            }
+            curSlot = slots[0];
+            releasPosition = transform.Find("ReleasPosition");
+        }
+
+
+
         private void Update()
         {
             ChangeMode();
-            if(OVRInput.GetDown(OVRInput.Button.Four))
-            //if(Input.GetKeyDown(KeyCode.K))
+            //if(OVRInput.GetDown(OVRInput.Button.Four))
+            if (Input.GetKeyDown(KeyCode.K))
             {
                 SlotChange();
             }
-            if(OVRInput.GetDown(OVRInput.Button.One))
-            //if (Input.GetKeyUp(KeyCode.L) || Input.GetKeyDown(KeyCode.L))
+            //if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger) || OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
+            if (Input.GetKeyDown(KeyCode.L)|| Input.GetKeyUp(KeyCode.L))
             {
-                if (mode == MODE.release)
-                {
-                    ItemRelease();
-                }
-                else if (mode == MODE.absorption)
-                {
-                    ItemAbsorption();
-                }
+                if(!isRelease) ItemAbsorption();
+            }
+            //if(OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger)&&isRelease)
+            if (Input.GetKeyDown(KeyCode.L) && isRelease)
+            {
+                ItemRelease();
             }
         }
 
         private void ChangeMode()
         {
-            if(OVRInput.GetDown(OVRInput.Button.Two))
-            //if(Input.GetKeyDown(KeyCode.T))
+            //if(OVRInput.GetDown(OVRInput.Button.Two))
+            if (Input.GetKeyDown(KeyCode.T))
             {
-                if(mode == MODE.release)
-                {
-                    mode = MODE.absorption;
-                }
-                else if( mode == MODE.absorption)
-                {
-                    mode = MODE.release;
-                }
+                isRelease = !isRelease;
+                if (isAbsorption) ItemAbsorption();
             }
         }
 
         private void SlotChange()
         {
             slotIndex++;
-            Debug.Log("ÇöÀç½½·Ô: " + slotIndex);
-            if(slotIndex == slots.Length)
+            if(slotIndex == slots.Count)
             {
                 slotIndex = 0;
             }
+            curSlot.ScaleUp(false);
             curSlot = slots[slotIndex];
+            curSlot.ScaleUp(true);
         }
 
         private void ItemAbsorption()
         {
-            foreach(var col in vacuumPackColliders)
+            isAbsorption = !isAbsorption;
+            particle.SetActive(!particle.activeSelf);
+            foreach (var col in vacuumPackColliders)
             {
                 col.enabled = !col.enabled;
-            }
-            if (particle.isPlaying)
-            {
-                particle.Stop();
-            }
-            else
-            {
-                particle.Play();
             }
         }
 
         private void ItemRelease()
         {
             if (curSlot.ItemCount == 0) return;
-            curSlot.ItemCount--;
             slotRelease[curSlot]?.Invoke();
+            curSlot.ItemCount--;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -149,24 +150,23 @@ namespace BC
             }
             return null;
         }
-
         private void ReleaseGem()
         {
-            ReleaseForce(ItemManager.Instance.CreateSceneItem(curSlot.curSlotItem as Gem, transform.position));
+            ReleaseForce(ItemManager.Instance.CreateSceneItem(curSlot.curSlotItem as Gem, releasPosition.position));
         }
         private void ReleaseCrop()
         {
-            ReleaseForce(ItemManager.Instance.CreateSceneItem(curSlot.curSlotItem as Crop, transform.position));
+            ReleaseForce(ItemManager.Instance.CreateSceneItem(curSlot.curSlotItem as Crop, releasPosition.position));
         }
         private void ReleaseSlime()
         {
-            ReleaseForce(ItemManager.Instance.CreateSceneItem(curSlot.curSlotItem as Slime, transform.position));
+            ReleaseForce(ItemManager.Instance.CreateSceneItem(curSlot.curSlotItem as Slime, releasPosition.position));
         }
-
         private void ReleaseForce(Transform itemTransform)
         {
-            itemTransform.TryGetComponent(out Rigidbody rig);
-            rig.AddForce(transform.forward * releasePower);
+            itemTransform.TryGetComponent(out IInteraction target);
+            target.MoveStop();
+            target.rigi.AddForce(releasPosition.forward * releasePower);
         }
     }
 }

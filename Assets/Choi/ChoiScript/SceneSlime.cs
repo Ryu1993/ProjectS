@@ -20,6 +20,7 @@ namespace BC
         public NavMeshAgent Agent { get; private set; }
         public Rigidbody rigi { get; set; }
         public ObjectPool home { get; set; }
+        public Item.ItemType type { get { return curSlime.type; }}
         [SerializeField]
         Face slimeFace;
         [SerializeField]
@@ -35,10 +36,10 @@ namespace BC
         private Collider[] vacuumColliders = new Collider[1];
         private float idleCount;
         private bool isFlying;
-        private bool isReady;
         private float hungry;
         private UnityAction vaccumCheck;
         public UnityAction returnAcition;
+        private NavMeshHit navHit;
 
 
         private void Awake()
@@ -53,12 +54,12 @@ namespace BC
         {
             curSlime = slime;
             sliemSkin.sharedMesh = slime.itemMesh;
-            sliemSkin.materials[0] = slime.itemMaterilal;
+            sliemSkin.sharedMaterials[0] = slime.itemMaterilal;
             FaceSet(slimeFace.Idleface);
             hungry = 0;
+            agent.enabled = true;
             agent.speed = curSlime.speed;
-            SlimeMovement();
-            isReady = true;
+            isFlying = false;
         }
         public void FaceSet(Texture tex)
         {
@@ -66,13 +67,11 @@ namespace BC
         }
         private void FixedUpdate()
         {
-         
             vaccumCheck?.Invoke();
+            if (isFlying) return;
             animator.SetFloat(Parameter.speed, agent.velocity.magnitude);
-            Debug.Log(agent.remainingDistance + " : " + agent.stoppingDistance);
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                Debug.Log("move");
                 idleCount += Time.fixedDeltaTime;
                 if(idleCount>5f)
                 {
@@ -145,7 +144,11 @@ namespace BC
 
         public void ItemReturn()
         {
-            isReady = false;
+            vaccumCheck = null;
+            agent.enabled = false;
+            animator.applyRootMotion = true;
+            rigi.isKinematic = true;
+            isFlying = true;
             returnAcition?.Invoke();
             home.Return(this.gameObject);
         }
@@ -154,7 +157,8 @@ namespace BC
         {
             isFlying = true;
             rigi.isKinematic = false;
-            agent.ResetPath();
+            animator.applyRootMotion = false;
+            agent.enabled = false;
             vaccumCheck = VacuumCheck;
         }
         private void VacuumCheck()
@@ -162,8 +166,10 @@ namespace BC
             vacuumColliders[0] = null;
             Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.27f, 0), 0.35f, vacuumColliders, vacuumMask, QueryTriggerInteraction.Collide);
             if (vacuumColliders[0] != null) return;
-            if (!agent.isOnNavMesh) return;
+            if (!NavMesh.SamplePosition(transform.position,out navHit,0.3f,NavMesh.AllAreas)) return;
             rigi.isKinematic = true;
+            agent.enabled = true;
+            animator.applyRootMotion = true;
             isFlying = false;
             vaccumCheck = null;
         }
