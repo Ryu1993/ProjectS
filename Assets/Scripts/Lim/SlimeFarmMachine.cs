@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SlimeFarm : MonoBehaviour
+public class SlimeFarmMachine : MonoBehaviour
 {
     [SerializeField]
     private Farm farm;
@@ -17,7 +17,7 @@ public class SlimeFarm : MonoBehaviour
 
     public void HighWallUpgrade()
     {
-        upgradeObject[0].transform.position = upgradeObject[0].transform.position+ Vector3.up*2;
+        upgradeObject[0].transform.position = upgradeObject[0].transform.position + Vector3.up*2;
     }
     public void AirNetUpgrade()
     {
@@ -35,7 +35,7 @@ public class SlimeFarm : MonoBehaviour
     {
         upgradeObject[4].SetActive(true);
     }
-    public void Func(string name)
+    public void StartFunction(string name)
     {
         Invoke(name, 0.1f);
     }

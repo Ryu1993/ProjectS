@@ -18,6 +18,8 @@ namespace BC
         [SerializeField]
         Transform leftHand;
         [SerializeField]
+        GameObject uiPhone;
+        [SerializeField]
         CharacterController objectCharacterController;
 
         RaycastHit movementHit;
@@ -31,33 +33,41 @@ namespace BC
         private void Start()
         {
             lineRenderer = GetComponent<LineRenderer>();
+            lineRenderer.enabled = false;
         }
 
         private void Update()
         {
-            //interactionRay = cameraMain.ScreenPointToRay(transform.forward*5);
-            //Physics.Raycast(interactionRay, out uiHit, uiInteractionDistance, uiMask);
-            Debug.DrawRay(leftHand.position, leftHand.forward * 10);
+            //if(Input.GetMouseButton(1))
             if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
             {
                 Time.timeScale = 0.1f;
                 if(Physics.Raycast(leftHand.position, leftHand.forward, out movementHit, Mathf.Infinity, groundMask))
-                //if (Physics.Raycast(moveRay, out movementHit, Mathf.Infinity, groundMask))
                 {
+                    lineRenderer.enabled = true;
                     linePositions[0] = transform.position + new Vector3(0,+0.75f,0);
                     movePointObject.SetActive(true);
-                    Vector3 dir = movementHit.point - movePointObject.transform.position;
+                    Vector3 dir = movementHit.point -transform.position;
                     objectCharacterController.Move(dir);
                     linePositions[1] = movePointObject.transform.position;
                     lineRenderer.SetPositions(linePositions);
                 }
             }
+            //if(Input.GetMouseButtonUp(1))
             if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
             {
                 Time.timeScale = 1f;
                 transform.position = movePointObject.transform.position + new Vector3(0, 0.75f, 0);
                 movePointObject.SetActive(false);
+                lineRenderer.enabled = false;
+
             }
+            if(OVRInput.GetDown(OVRInput.Button.One))
+            {
+                uiPhone.SetActive(uiPhone.activeSelf);
+            }
+
+
         }
 
    

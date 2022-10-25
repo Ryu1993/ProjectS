@@ -14,7 +14,8 @@ public class AutoFeed : MonoBehaviour
     [SerializeField]
     private Transform cropsInputTransform;
 
-    private SlimeFarm slimeFarm;
+    private ShowSlotInfo showSlotInfo;
+    private SlimeFarmMachine slimeFarm;
     private Crop crop;
     private int count = 0;
     private float coolTime = 5f;
@@ -22,7 +23,8 @@ public class AutoFeed : MonoBehaviour
 
     private void Start()
     {
-        slimeFarm = GetComponentInParent<SlimeFarm>();
+        showSlotInfo = GetComponentInChildren<ShowSlotInfo>();
+        slimeFarm = GetComponentInParent<SlimeFarmMachine>();
         StartCoroutine(CheckCoolTime(coolTime));
     }
 
@@ -30,6 +32,10 @@ public class AutoFeed : MonoBehaviour
     {
         AutoFeeding();
         GetCrops();
+    }
+    private void LateUpdate()
+    {
+        UpdateUI();
     }
 
     private void AutoFeeding()
@@ -71,7 +77,10 @@ public class AutoFeed : MonoBehaviour
             }
         }
     }
-
+    private void UpdateUI()
+    {
+        showSlotInfo.ChangeImage(crop, count);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Vacuum")

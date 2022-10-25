@@ -18,21 +18,29 @@ public class AutoGem : MonoBehaviour
     [SerializeField]
     private Transform centerTransform;
     [SerializeField]
+    private Transform interactionTransform;
+    [SerializeField]
+    private List<GemsCount> gems;
+    [SerializeField]
     private Vector3 boxSize;
+    private ShowSlotInfo[] showSlotInfos;
     private float coolTime = 5f;
     private int slotCount = 2;
     private int totalCount = 0;
     private bool isCoolTime = false;
-    [SerializeField]
-    private List<GemsCount> gems;
     private void Start()
     {
+        showSlotInfos = GetComponentsInChildren<ShowSlotInfo>();
         gems = new List<GemsCount>(slotCount);
         StartCoroutine(CheckCoolTime(coolTime));
     }
     private void Update()
     {
         HarvestGem();
+    }
+    private void LateUpdate()
+    {
+        UpdateSlot();
     }
 
     private void HarvestGem()
@@ -56,7 +64,6 @@ public class AutoGem : MonoBehaviour
             }
         }
     }
-
     private bool CheckGemSlot(Gem gem)
     {
         if(gems.Count == 0)
@@ -97,7 +104,20 @@ public class AutoGem : MonoBehaviour
         }
         return false;
     }
-
+    private void UpdateSlot()
+    {
+        for (int i = 0; i < showSlotInfos.Length; i++)
+        {
+            if(i > gems.Count-1)
+            {
+                showSlotInfos[i].ChangeImage(null, 0);
+            }
+            else
+            {
+                showSlotInfos[i].ChangeImage(gems[i].gem, gems[i].count);
+            }
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Vacuum")
@@ -128,7 +148,7 @@ public class AutoGem : MonoBehaviour
         while(totalCount>0)
         {
             int slotNum = UnityEngine.Random.Range(0, gems.Count);
-            ItemManager.Instance.CreateSceneItem(gems[slotNum].gem, transform.position);
+            ItemManager.Instance.CreateSceneItem(gems[slotNum].gem, interactionTransform.position);
             gems[slotNum].count--;
             totalCount--;
             if (gems[slotNum].count <=0)
