@@ -20,6 +20,7 @@ namespace BC
         public NavMeshAgent Agent { get; private set; }
         public Rigidbody rigi { get; set; }
         public ObjectPool home { get; set; }
+        public Item.ItemType type { get { return curSlime.type; }}
         [SerializeField]
         Face slimeFace;
         [SerializeField]
@@ -35,10 +36,12 @@ namespace BC
         private Collider[] vacuumColliders = new Collider[1];
         private float idleCount;
         private bool isFlying;
-        private bool isReady;
         private float hungry;
-        private UnityAction vaccumCheck;
+        private float agentDelay;
+        private float agentDelayCount;
+        private UnityAction<float> vaccumCheck;
         public UnityAction returnAcition;
+        private NavMeshHit navHit;
 
 
         private void Awake()
@@ -53,12 +56,12 @@ namespace BC
         {
             curSlime = slime;
             sliemSkin.sharedMesh = slime.itemMesh;
-            sliemSkin.materials[0] = slime.itemMaterilal;
+            sliemSkin.sharedMaterials[0] = slime.itemMaterilal;
             FaceSet(slimeFace.Idleface);
             hungry = 0;
+            agent.enabled = true;
             agent.speed = curSlime.speed;
-            SlimeMovement();
-            isReady = true;
+            isFlying = false;
         }
         public void FaceSet(Texture tex)
         {
@@ -66,13 +69,16 @@ namespace BC
         }
         private void FixedUpdate()
         {
-         
-            vaccumCheck?.Invoke();
+            vaccumCheck?.Invoke(agentDelay);
+            if (isFlying) return;
+            hungry += Time.fixedDeltaTime;
+            if(hungry>=300)
+            {
+                FindFeed();
+            }
             animator.SetFloat(Parameter.speed, agent.velocity.magnitude);
-            Debug.Log(agent.remainingDistance + " : " + agent.stoppingDistance);
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                Debug.Log("move");
                 idleCount += Time.fixedDeltaTime;
                 if(idleCount>5f)
                 {
@@ -81,14 +87,7 @@ namespace BC
                 }
                 else
                 {
-                    if(hungry>300)
-                    {
-                        FindFeed();
-                    }
-                    else
-                    {
-                        SlimeJump();
-                    }
+                    SlimeJump();
                 }
             }
         }
@@ -145,25 +144,52 @@ namespace BC
 
         public void ItemReturn()
         {
-            isReady = false;
+            vaccumCheck = null;
+            agent.enabled = false;
+            animator.applyRootMotion = true;
+            rigi.isKinematic = true;
+            rigi.useGravity = true;
+            isFlying = true;
             returnAcition?.Invoke();
             home.Return(this.gameObject);
         }
 
-        public void MoveStop()
+        public void MoveStop()=> MoveStop(0);
+        public void MoveStop(float delay)
         {
             isFlying = true;
+            rigi.useGravity = false;
             rigi.isKinematic = false;
-            agent.ResetPath();
+            animator.applyRootMotion = false;
+            agent.enabled = false;
+            agentDelay = delay;
             vaccumCheck = VacuumCheck;
         }
-        private void VacuumCheck()
+
+
+        private void VacuumCheck(float delay)
         {
             vacuumColliders[0] = null;
             Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.27f, 0), 0.35f, vacuumColliders, vacuumMask, QueryTriggerInteraction.Collide);
             if (vacuumColliders[0] != null) return;
-            if (!agent.isOnNavMesh) return;
+            if(delay != 0)
+            {
+                agentDelayCount += Time.fixedDeltaTime;
+                if(agentDelayCount<agentDelay)
+                {
+                    return;
+                }
+                else
+                {
+                    agentDelayCount = 0;
+                    agentDelay = 0;
+                }
+            }
+            rigi.useGravity = true;
+            if (!NavMesh.SamplePosition(transform.position,out navHit,0.3f,NavMesh.AllAreas)) return;
             rigi.isKinematic = true;
+            agent.enabled = true;
+            animator.applyRootMotion = true;
             isFlying = false;
             vaccumCheck = null;
         }

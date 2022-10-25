@@ -10,6 +10,7 @@ public class SceneItem : MonoBehaviour,IInteraction,IPoolingable,IItemable
     protected Item curItem;
     public ObjectPool home { get; set; }
     public Rigidbody rigi { get; set; }
+    public Item.ItemType type { get { return curItem.type; } }
 
     protected void Awake()
     {
@@ -22,8 +23,8 @@ public class SceneItem : MonoBehaviour,IInteraction,IPoolingable,IItemable
         if (item as Slime != null) return;
         Debug.Log(item);
         curItem = item;
-        m_Filter.mesh = item.itemMesh;
-        m_Renderer.material = item.itemMaterilal;
+        m_Filter.sharedMesh = item.itemMesh;
+        m_Renderer.sharedMaterial = item.itemMaterilal;
     }
     protected virtual void ItemReset()
     {
@@ -31,8 +32,8 @@ public class SceneItem : MonoBehaviour,IInteraction,IPoolingable,IItemable
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.Euler(Vector3.zero);
         curItem = null;
-        m_Filter.mesh = null;
-        m_Renderer.material = null;
+        m_Filter.sharedMesh = null;
+        m_Renderer.sharedMaterial = null;
     }
 
     public Item ItemRequest()
