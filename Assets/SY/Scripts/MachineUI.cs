@@ -14,6 +14,8 @@ public class MachineUI : MonoBehaviour
     private TextMeshProUGUI upgradeInfo;
     [SerializeField]
     private TextMeshProUGUI upgradePrice;
+    [SerializeField]
+    private Image upgradeImage;
     public GameObject upgradeFail;
     public GameObject upgradeSuccess;
     private MachineController machineUIController;
@@ -22,15 +24,15 @@ public class MachineUI : MonoBehaviour
     private void Awake()
     {
         machineUIController = UIManager.Instance.MachineController;
-        farm = UIManager.Instance.MachineController.farm;
+        //farm = UIManager.Instance.MachineController.farm;
     }
 
 
     //UI창 활성화될 때마다 남은 UpgradeList만큼 활성화
-    public void OnEnable()
-    {
-        CountUpgradeList();
-    }
+    //public void OnEnable()
+    //{
+    //    CountUpgradeList();
+    //}
 
 
     public void ShowInfo(Upgrade upgrade)
@@ -38,6 +40,7 @@ public class MachineUI : MonoBehaviour
         upgradeName.text = upgrade.UpgradeName;
         upgradePrice.text = upgrade.RequireCoin + "";
         upgradeInfo.text = upgrade.UpgradeInfo;
+        upgradeImage.sprite = upgrade.UpgradeImage;
         machineUIController.selectUpgrade = upgrade;
     }
 

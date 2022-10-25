@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
 public class FarmMachine : MonoBehaviour
@@ -17,7 +18,12 @@ public class FarmMachine : MonoBehaviour
     private float rotTime;
     private bool isWater;
     public ScenePlant[] childPlant;
+    [SerializeField]
+    private GameObject sprinkler;
+    [SerializeField]
+    private Image cropImage;
     public Crop tempCrop;
+    
     
 
     private void Start()
@@ -50,6 +56,7 @@ public class FarmMachine : MonoBehaviour
                 if (target != null)
                 {
                     Plant(target);
+                    cropImage.sprite = target.Crop.itemSprite;
                     growTime = target.Plant.growTime;
                     StartGrow();
                     target.ItemReturn();
@@ -118,6 +125,11 @@ public class FarmMachine : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position + machineHeight, detectRange);
     }
 
+    public void StartFunction(string func)
+    {
+        Invoke(func, 0.1f);
+    }
+
     //작물 제거 10G
     public void DeleteCrop()
     {
@@ -126,27 +138,33 @@ public class FarmMachine : MonoBehaviour
         {
             childPlant[i].ItemReturn();
         }
+        cropImage.sprite = null;
         childPlant = null;
-    }
-    public void startFunction(string func)
-    {
-        Invoke(func, 0.1f);
     }
 
     //스프링클러(자동으로 물주는 거) : 500G
     public void Sprinkler()
     {
         Debug.Log("자동 물주기");
-        AutoWater();
-        for (int i = 0; i < childPlant.Length; i++)
+        sprinkler.SetActive(true);
+        if (childPlant != null)
         {
-            CropManager.Instance.timeChange -= childPlant[i].TimeChange;
+            AutoWater();
+            for (int i = 0; i < childPlant.Length; i++)
+            {
+                CropManager.Instance.timeChange -= childPlant[i].TimeChange;
+            }
+            CropManager.Instance.timeChange += AutoWater;
+            for (int i = 0; i < childPlant.Length; i++)
+            {
+                CropManager.Instance.timeChange += childPlant[i].TimeChange;
+            }
         }
-        CropManager.Instance.timeChange += AutoWater;
-        for (int i = 0; i < childPlant.Length; i++)
+        else
         {
-            CropManager.Instance.timeChange += childPlant[i].TimeChange;
+            CropManager.Instance.timeChange += AutoWater;
         }
+        
     }
 
     //기적의 비료(썩는 데 걸리는 시간 추가) : 500G
@@ -154,7 +172,7 @@ public class FarmMachine : MonoBehaviour
     {
         for (int i = 0; i < childPlant.Length; i++)
         {
-           // childPlant[i].isWater = true;
+           //childPlant[i].rotTime -= 2f;
         }
     }
 
@@ -163,7 +181,7 @@ public class FarmMachine : MonoBehaviour
     {
         for (int i = 0; i < childPlant.Length; i++)
         {
-            //childPlant[i].isWater = true;
+            //childPlant[i].bornTime += 1f;
         }
     }
 
@@ -178,9 +196,16 @@ public class FarmMachine : MonoBehaviour
 
     public void AutoWater()
     {
-        for (int i = 0; i < childPlant.Length; i++)
+        if (childPlant != null)
         {
-            childPlant[i].isWater = true;
+            for (int i = 0; i < childPlant.Length; i++)
+            {
+                childPlant[i].isWater = true;
+            }
+        }
+        else
+        {
+            return;
         }
     }
 
