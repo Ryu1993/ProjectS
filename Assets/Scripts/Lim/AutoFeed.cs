@@ -13,6 +13,8 @@ public class AutoFeed : MonoBehaviour
     private Transform feedTransform;
     [SerializeField]
     private Transform cropsInputTransform;
+    [SerializeField]
+    private AudioClip[] clip;
 
     private ShowSlotInfo showSlotInfo;
     private SlimeFarmMachine slimeFarm;
@@ -52,6 +54,7 @@ public class AutoFeed : MonoBehaviour
                 count++;
                 colliders[i].TryGetComponent(out IPoolingable target);
                 target.home.Return(colliders[i].gameObject);
+                SoundManager.Instance.CreateSoundBox(clip[0], cropsInputTransform.position);
             }
         }
     }
@@ -78,6 +81,7 @@ public class AutoFeed : MonoBehaviour
         while(count > 0)
         {
             ItemManager.Instance.CreateSceneItem(crop, transform.position);
+            SoundManager.Instance.CreateSoundBox(clip[1], cropsInputTransform.position);
             count--;
             if(count <=0)
             {
@@ -105,6 +109,7 @@ public class AutoFeed : MonoBehaviour
                 cropTranform.parent = slimeFarm.InsideObject.transform;
                 Vector3 random = new Vector3(0, 0, Random.Range(-0.8f, 0.8f));
                 cropRigidbody.AddForce(feedTransform.forward+random,ForceMode.Impulse);
+                SoundManager.Instance.CreateSoundBox(clip[1], feedTransform.position);
                 count--;
                 yield return new WaitForSeconds(0.2f);
             }

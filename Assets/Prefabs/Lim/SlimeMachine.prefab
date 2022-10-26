@@ -1511,6 +1511,10 @@ MonoBehaviour:
   harvestTransform: {fileID: 1548829549191195844}
   gems: []
   boxSize: {x: 8, y: 3, z: 8}
+  clip:
+  - {fileID: 8300000, guid: 831f364f79fce504a9d992dcf3a357f3, type: 3}
+  - {fileID: 8300000, guid: e5ebc6dec67811a4a93fa948a8685207, type: 3}
+  - {fileID: 8300000, guid: b8cbe8f8dff4e5a43bb9a6931ebd15c0, type: 3}
 --- !u!208 &6174082513480721863
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -4077,6 +4081,9 @@ MonoBehaviour:
   feedCount: 3
   feedTransform: {fileID: 6174082513800176662}
   cropsInputTransform: {fileID: 6174082513643690134}
+  clip:
+  - {fileID: 8300000, guid: e5ebc6dec67811a4a93fa948a8685207, type: 3}
+  - {fileID: 8300000, guid: 831f364f79fce504a9d992dcf3a357f3, type: 3}
 --- !u!136 &6174082514421638796
 CapsuleCollider:
   m_ObjectHideFlags: 0
