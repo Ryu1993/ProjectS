@@ -6,26 +6,52 @@ public class FingerRay : MonoBehaviour
 {
     public LayerMask mask;
     private UIEventFunc target;
+    private RaycastHit hit;
+    private Vector3[] vecs = new Vector3[2];
+    [SerializeField]
+    private LineRenderer line;
+
+    private void Update()
+    {
+        ClickUI();
+    }
 
     private void ClickUI()
     {
-        if (target != null) // 버튼 입력시로 변경
+        if (OVRInput.GetDown(OVRInput.Button.Three))
         {
-            RaycastHit hit;
-            Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, mask);//레이 발사 위치 조정
-            if (hit.transform != null)
-            {
-                target = hit.transform.GetComponent<UIEventFunc>();
-                target?.OnClick.Invoke();
-            }
+            line.gameObject.SetActive(true);
         }
-        else if (target == null)//else 로 변경
+        if (OVRInput.GetUp(OVRInput.Button.Three))
+        {
+            line.gameObject.SetActive(false);
+        }
+        if (OVRInput.Get(OVRInput.Button.Three)) // 버튼 입력시로 변경
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 9f, mask,QueryTriggerInteraction.Collide))
+            {
+                Debug.Log(target);
+                vecs[0] = transform.position;
+                vecs[1] = hit.point;
+                line.SetPositions(vecs);
+                if (target == null)
+                {
+                    hit.transform.TryGetComponent(out target);
+                    target?.OnClick.Invoke();
+                }
+            }
+
+            //레이 발사 위치 조정
+        }
+        else
         {
             if (target != null)
             {
-                target.OffClick.Invoke();
+                target?.OffClick.Invoke();
                 target = null;
             }
         }
+        
+
     }
 }

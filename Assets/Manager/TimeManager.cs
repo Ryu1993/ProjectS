@@ -5,8 +5,9 @@ using UnityEngine.Events;
 
 public class TimeManager : Singleton<TimeManager>
 {
-    [SerializeField, Range(1,10)]
+    [SerializeField, Range(1,1000)]
     private int timeAcceleration;
+    [SerializeField]
     private int gameSecond = 0;
     public int dayCount { get; private set; }
     private WaitForSecondsRealtime realSecond;

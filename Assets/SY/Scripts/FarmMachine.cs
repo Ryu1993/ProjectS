@@ -157,32 +157,47 @@ public class FarmMachine : MonoBehaviour
     //기적의 비료(썩는 데 걸리는 시간 추가) : 500G
     public void Fertilizer()
     {
-        for (int i = 0; i < childPlant.Length; i++)
+        if (childPlant != null)
         {
-           //childPlant[i].rotTime -= 2f;
+            for (int i = 0; i < childPlant.Length; i++)
+            {
+                //childPlant[i].rotTime -= 2f;
+            }
         }
+
     }
 
     //비옥한 토양(빨리 자라게) : 300G
     public void FertileSoil()
     {
-        for (int i = 0; i < childPlant.Length; i++)
+        if (childPlant != null)
         {
-            //childPlant[i].bornTime += 1f;
+            for (int i = 0; i < childPlant.Length; i++)
+            {
+                //childPlant[i].bornTime += 1f;
+            }
         }
+
     }
 
     //나오는 열매 개수 증가 : 500G
     public void MoreFruits()
     {
-        for (int i = 0; i < childPlant.Length; i++)
+        if (childPlant != null)
         {
-            //childPlant[i].isWater = true;
+            for (int i = 0; i < childPlant.Length; i++)
+            {
+                //childPlant[i].isWater = true;
+            }
         }
+
     }
 
     public void AutoWater()
     {
+        sprinkler.transform.FindComponentChild(out ParticleSystem particle);
+        sprinkler.transform.GetComponent<AudioSource>().Play();
+        particle.Play();
         if (childPlant != null)
         {
             for (int i = 0; i < childPlant.Length; i++)

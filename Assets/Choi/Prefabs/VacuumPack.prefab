@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 5010645991591943028}
   - component: {fileID: 5010645991590975924}
   - component: {fileID: 5805880357154721163}
-  - component: {fileID: 3213540462628509432}
+  - component: {fileID: 494468363574864355}
   m_Layer: 0
   m_Name: VacuumPack
   m_TagString: Untagged
@@ -350,8 +350,8 @@ MonoBehaviour:
   - {r: 0.9528302, g: 0.725824, b: 0.21124065, a: 0.64705884}
   releasePower: 2
   isSlime: 0
---- !u!65 &3213540462628509432
-BoxCollider:
+--- !u!135 &494468363574864355
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -361,8 +361,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 3.8751338, y: 9.563654, z: 5.71167}
-  m_Center: {x: 0.00000029802322, y: -0.961279, z: 10.410404}
+  m_Radius: 15.9958315
+  m_Center: {x: 0.00000023841858, y: -0.9612789, z: 8}
 --- !u!1 &5010645991592904568
 GameObject:
   m_ObjectHideFlags: 0

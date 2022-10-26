@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UIEventFunc : MonoBehaviour
 {
+    private UIManager uimanager;
     public UnityEvent OnClick;
     public UnityEvent OffClick;
     public Upgrade upgrade;
@@ -13,6 +14,11 @@ public class UIEventFunc : MonoBehaviour
     public GameObject machine;
     private int upgradePrice;
     private bool isClick = false;
+
+    private void Awake()
+    {
+        uimanager = GetComponentInParent<UIManager>();
+    }
 
     public void ActiveFalse(GameObject target)
     {
@@ -31,12 +37,12 @@ public class UIEventFunc : MonoBehaviour
     }
     public void ShowInfo()
     {
-        UIManager.Instance.MachineUI.ShowInfo(upgrade);
+        uimanager.Instance.MachineUI.ShowInfo(upgrade);
     }
 
     public void BuyUpgrade()
     {
-        UIManager.Instance.MachineController.BuyUpgrade();
+        uimanager.Instance.MachineController.BuyUpgrade();
     }
 
     public void ChangeBool(bool value)
@@ -46,9 +52,10 @@ public class UIEventFunc : MonoBehaviour
 
     public void SelectFarmType()
     {
-        UIManager.Instance.MachineController.farm = farm;
-        UIManager.Instance.MachineUI.farm = farm;
-        UIManager.Instance.MachineController.SelectFarm();
+        Debug.Log("selectfarm");
+        uimanager.Instance.MachineController.farm = farm;
+        uimanager.Instance.MachineUI.farm = farm;
+        uimanager.Instance.MachineController.SelectFarm();
         machine.SetActive(true);
     }
 }

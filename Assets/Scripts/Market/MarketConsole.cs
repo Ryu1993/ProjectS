@@ -8,6 +8,8 @@ public class MarketConsole : MonoBehaviour
     [SerializeField]
     private MarketWindow marketWindow;
     [SerializeField]
+    private GameObject nameCanvas;
+    [SerializeField]
     private MarketSlot slot;
     private bool isActive;
     private BC.Player player;
@@ -24,6 +26,7 @@ public class MarketConsole : MonoBehaviour
     {
         if (other.TryGetComponent(out player))
         {
+            nameCanvas.SetActive(!nameCanvas.activeSelf);
             marketWindow.gameObject.SetActive(true);
             marketWindow.MarketPopUp();
             slot.SlotSwitch();
@@ -35,9 +38,13 @@ public class MarketConsole : MonoBehaviour
     {
         if(isActive)
         {
-            slot.SlotSwitch();
-            marketWindow.gameObject.SetActive(false);
-            isActive = false;
+            if (other.TryGetComponent(out player))
+            {
+                nameCanvas.SetActive(!nameCanvas.activeSelf);
+                slot.SlotSwitch();
+                marketWindow.gameObject.SetActive(false);
+                isActive = false;
+            }
         }
     }
 

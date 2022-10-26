@@ -8,6 +8,7 @@ public class MusicBoxControll : MonoBehaviour
     private int curClipNum;
     public AudioClip[] audioClip;
 
+
     private void OnEnable()
     {
         curClipNum = 0;
