@@ -14,41 +14,25 @@ public class AutoFeed : MonoBehaviour
     [SerializeField]
     private Transform cropsInputTransform;
 
-    private SlimeFarm slimeFarm;
+    private ShowSlotInfo showSlotInfo;
+    private SlimeFarmMachine slimeFarm;
     private Crop crop;
     private int count = 0;
-    private float coolTime = 5f;
-    private bool isCoolTime = false;
 
     private void Start()
     {
-        slimeFarm = GetComponentInParent<SlimeFarm>();
-        StartCoroutine(CheckCoolTime(coolTime));
+        showSlotInfo = GetComponentInChildren<ShowSlotInfo>();
+        slimeFarm = GetComponentInParent<SlimeFarmMachine>();
+        StartCoroutine(AutoFeeding());
     }
 
     private void Update()
     {
-        AutoFeeding();
         GetCrops();
     }
-
-    private void AutoFeeding()
+    private void LateUpdate()
     {
-        if (isCoolTime)
-            return;
-        for (int i = 0; i < feedCount; i++)
-        {
-            if (count <= 0)
-            {
-                crop = null;
-                break;
-            }
-            Transform cropTranform = ItemManager.Instance.CreateSceneItem(crop, feedTransform.position);
-            Rigidbody cropRigidbody = cropTranform.GetComponent<Rigidbody>();
-            cropTranform.parent = slimeFarm.InsideObject.transform;
-            cropRigidbody.AddForce(cropTranform.forward);
-            count--;
-        }
+        UpdateUI();
     }
 
     private void GetCrops()
@@ -58,7 +42,7 @@ public class AutoFeed : MonoBehaviour
         {
             for (int i = 0; i < colliders.Length; i++)
             {
-                Crop targetCrop = colliders[i].GetComponent<Crop>();
+                Crop targetCrop = colliders[i].GetComponent<SceneCrop>().Crop;
                 if(crop == null)
                 {
                     crop = targetCrop;
@@ -71,29 +55,22 @@ public class AutoFeed : MonoBehaviour
             }
         }
     }
-
+    private void UpdateUI()
+    {
+        showSlotInfo.ChangeImage(crop, count);
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Vacuum")
+        if (other.gameObject.layer == LayerMask.NameToLayer("Vaccum"))
         {
             StartCoroutine(SummonCrop());
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Vacuum")
+        if(other.gameObject.layer == LayerMask.NameToLayer("Vaccum"))
         {
             StopCoroutine(SummonCrop());
-        }
-    }
-    IEnumerator CheckCoolTime(float value)
-    {
-        while (true)
-        {
-            yield return new WaitUntil(() => isCoolTime == false);
-            isCoolTime = true;
-            yield return new WaitForSeconds(value);
-            isCoolTime = false;
         }
     }
     IEnumerator SummonCrop()
@@ -109,5 +86,28 @@ public class AutoFeed : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
         yield return null;
+    }
+    IEnumerator AutoFeeding()
+    {
+        while(true)
+        {
+            yield return new WaitUntil(() =>  count > 0 );
+            yield return new WaitForSeconds(10f);
+            for (int i = 0; i < feedCount; i++)
+            {
+                if (count <= 0)
+                {
+                    crop = null;
+                    break;
+                }
+                Transform cropTranform = ItemManager.Instance.CreateSceneItem(crop, feedTransform.position);
+                Rigidbody cropRigidbody = cropTranform.GetComponent<Rigidbody>();
+                cropTranform.parent = slimeFarm.InsideObject.transform;
+                Vector3 random = new Vector3(0, 0, Random.Range(-0.8f, 0.8f));
+                cropRigidbody.AddForce(feedTransform.forward+random,ForceMode.Impulse);
+                count--;
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 
 public class GameManager : Singleton<GameManager>
 {
+    [SerializeField]
     public List<Gem> detectionGems = new List<Gem>();
     public float playerGold;
 
@@ -13,6 +14,15 @@ public class GameManager : Singleton<GameManager>
     {
         if (detectionGems.Contains(gem)) return;
         detectionGems.Add(gem);
+    }
+
+    public void TakeItem(Item item)
+    {
+        Gem tempGem = item as Gem;
+        if(tempGem!=null)
+        {
+            TakeGem(tempGem);
+        }
     }
 
 

@@ -14,7 +14,7 @@ public class ScenePlant : MonoBehaviour, IPoolingable
     [SerializeField]
     private Plant plant;
     public Plant Plant { get { return plant; }  set { plant = value; } }
-    private float bornTime;
+    public float bornTime;
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
     private bool isGrow;
@@ -29,25 +29,16 @@ public class ScenePlant : MonoBehaviour, IPoolingable
         meshRenderer = GetComponentInChildren<MeshRenderer>();
     }
 
-    private void OnEnable()
+
+    public void FirstSetting(Plant inputPlant)
     {
-        StartCoroutine(SettingDelay());
-        isWater = false;
-    }
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            TimeChange();
-        }
-    }
-    public void FirstSetting()
-    {
-        CropManager.Instance.timeChange += TimeChange;
+        Plant = inputPlant;
         Crop = Plant.Fruit;
         isGrow = false;
         bornTime = 0;
         growTime = Plant.growTime;
+        isWater = false;
+        TimeManager.Instance.dayProgressAction += TimeChange;
     }
 
     public void TimeChange()
@@ -87,11 +78,6 @@ public class ScenePlant : MonoBehaviour, IPoolingable
         ItemReturn();
     }
 
-    IEnumerator SettingDelay()
-    {
-        yield return new WaitForSeconds(0.1f);
-        FirstSetting();
-    }
 
     public void ItemReturn()
     {
@@ -111,7 +97,7 @@ public class ScenePlant : MonoBehaviour, IPoolingable
 
     protected void ItemReset()
     {
-        CropManager.Instance.timeChange -= TimeChange;
+        TimeManager.Instance.dayProgressAction -= TimeChange;
         growTime = 0;
         bornTime = 0;
         rotTime = 0;

@@ -1,7 +1,7 @@
+using Oculus.Interaction;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [Serializable]
@@ -18,15 +18,21 @@ public class AutoGem : MonoBehaviour
     [SerializeField]
     private Transform centerTransform;
     [SerializeField]
+    private Transform interactionTransform;
+    [SerializeField]
+    private Transform harvestTransform;
+    [SerializeField]
+    private List<GemsCount> gems;
+    [SerializeField]
     private Vector3 boxSize;
-    private float coolTime = 5f;
+    private ShowSlotInfo[] showSlotInfos;
+    private float coolTime = 10f;
     private int slotCount = 2;
     private int totalCount = 0;
     private bool isCoolTime = false;
-    [SerializeField]
-    private List<GemsCount> gems;
     private void Start()
     {
+        showSlotInfos = GetComponentsInChildren<ShowSlotInfo>();
         gems = new List<GemsCount>(slotCount);
         StartCoroutine(CheckCoolTime(coolTime));
     }
@@ -34,29 +40,33 @@ public class AutoGem : MonoBehaviour
     {
         HarvestGem();
     }
+    private void LateUpdate()
+    {
+        UpdateSlot();
+    }
 
     private void HarvestGem()
     {
         if (isCoolTime)
             return;
-
         Collider[] colliders = Physics.OverlapBox(centerTransform.position, boxSize, Quaternion.identity, gemLayer);
         if(colliders.Length>0)
         {
             for (int i = 0; i < colliders.Length; i++)
             {
                 colliders[i].TryGetComponent(out SceneGem target);
-                Gem gem = target.ItemRequest() as Gem;
-                bool check = CheckGemSlot(gem);
-                if(check)
-                {
-                    target.home.Return(colliders[i].gameObject);
-                    totalCount++;
-                }
+                colliders[i].TryGetComponent(out Rigidbody targetRb);
+                StartCoroutine(VaccumGem(target, targetRb));
+                //Gem gem = target.ItemRequest() as Gem;
+                //bool check = CheckGemSlot(gem);
+                //if(check)
+                //{
+                //    target.home.Return(colliders[i].gameObject);
+                //    totalCount++;
+                //}
             }
         }
     }
-
     private bool CheckGemSlot(Gem gem)
     {
         if(gems.Count == 0)
@@ -97,17 +107,30 @@ public class AutoGem : MonoBehaviour
         }
         return false;
     }
-
+    private void UpdateSlot()
+    {
+        for (int i = 0; i < showSlotInfos.Length; i++)
+        {
+            if(i > gems.Count-1)
+            {
+                showSlotInfos[i].ChangeImage(null, 0);
+            }
+            else
+            {
+                showSlotInfos[i].ChangeImage(gems[i].gem, gems[i].count);
+            }
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Vacuum")
+        if (other.gameObject.layer == LayerMask.NameToLayer("Vaccum"))
         {
             StartCoroutine(SummonGem());
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Vacuum")
+        if (other.gameObject.layer == LayerMask.NameToLayer("Vaccum"))
         {
             StopCoroutine(SummonGem());
         }
@@ -128,14 +151,33 @@ public class AutoGem : MonoBehaviour
         while(totalCount>0)
         {
             int slotNum = UnityEngine.Random.Range(0, gems.Count);
-            ItemManager.Instance.CreateSceneItem(gems[slotNum].gem, transform.position);
+            ItemManager.Instance.CreateSceneItem(gems[slotNum].gem, interactionTransform.position);
             gems[slotNum].count--;
             totalCount--;
             if (gems[slotNum].count <=0)
             {
                 gems.RemoveAt(slotNum);
             }
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield return null;
+    }
+    IEnumerator VaccumGem(SceneGem target,Rigidbody targetRb)
+    {
+        while (true)
+        {
+            if (Vector3.Distance(target.transform.position, harvestTransform.position) < 1f)
+                break;
+            targetRb.velocity = (harvestTransform.position-targetRb.transform.position).normalized*3f;
+            Debug.Log(Vector3.Distance(harvestTransform.position, targetRb.transform.position));
+            yield return new WaitForSeconds(0.1f);
+        }
+        Gem gem = target.ItemRequest() as Gem;
+        bool check = CheckGemSlot(gem);
+        if (check)
+        {
+            target.home.Return(target.gameObject);
+            totalCount++;
         }
         yield return null;
     }

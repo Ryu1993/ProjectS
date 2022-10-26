@@ -8,7 +8,10 @@ public class UIEventFunc : MonoBehaviour
 {
     public UnityEvent OnClick;
     public UnityEvent OffClick;
-
+    public Upgrade upgrade;
+    public Farm farm;
+    public GameObject machine;
+    private int upgradePrice;
     private bool isClick = false;
 
     public void ActiveFalse(GameObject target)
@@ -21,21 +24,31 @@ public class UIEventFunc : MonoBehaviour
     }
     public void ChangeValue(Scrollbar target)
     {
-        if(isClick)
+        if (isClick)
         {
-            target.value += Input.GetAxis("Vertical") *0.5f;//컨트롤러 밸류 값 으로 변경
+            target.value += Input.GetAxis("Vertical") * 0.5f;
         }
     }
     public void ShowInfo()
     {
-        
+        UIManager.Instance.MachineUI.ShowInfo(upgrade);
     }
+
     public void BuyUpgrade()
     {
-        //업그레이드 실행해보기
+        UIManager.Instance.MachineController.BuyUpgrade();
     }
+
     public void ChangeBool(bool value)
     {
         isClick = value;
+    }
+
+    public void SelectFarmType()
+    {
+        UIManager.Instance.MachineController.farm = farm;
+        UIManager.Instance.MachineUI.farm = farm;
+        UIManager.Instance.MachineController.SelectFarm();
+        machine.SetActive(true);
     }
 }

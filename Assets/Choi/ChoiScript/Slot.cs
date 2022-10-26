@@ -14,13 +14,16 @@ namespace BC
         Image itemImage;
         private int itemCount;
         TextMeshProUGUI itemCountUI;
+
+
+
         public int ItemCount { get { return itemCount; }
             set 
             {
                 if(value == 0)
                 {
                     curSlotItem = null;
-                    itemImage = null;
+                    itemImage .sprite= null;
                 }
                 itemCount = value;
                 itemCountUI.text = value.ToString();
@@ -38,6 +41,13 @@ namespace BC
             curSlotItem = item;
             itemImage.sprite = item.itemSprite;
         }
+        public void ScaleUp(bool isSelect)
+        {
+            if (isSelect) transform.localScale = new Vector3(1.2f, 1.2f, 1);
+            else transform.localScale = Vector3.one;
+        }
+
+
     }
 }
 
