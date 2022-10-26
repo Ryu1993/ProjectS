@@ -5,29 +5,18 @@ using UnityEngine;
 
 public class LimTest : MonoBehaviour
 {
-    //[SerializeField]
-    //private Slime crop;
-    //Rigidbody rb;
-    private void Awake()
-    {
-        //rb = GetComponent<Rigidbody>();
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        other.TryGetComponent(out Rigidbody rb);
-        if(other.TryGetComponent(out SceneSlime sceneSlime))
-        {
-            Vector3 centerUp = (transform.position-rb.transform.position).normalized;
-            sceneSlime.MoveStop(0.1f);
-            rb.AddForce((centerUp+Vector3.up)*0.4f, ForceMode.Impulse);
-        }
-    }
+    public Animator animator;
     private void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    ItemManager.Instance.CreateSceneItem(crop, transform.position);
-        //}
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            animator.SetBool("asd", true);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            animator.SetBool("asd", false);
+        }
+
         /*
         if(Input.GetKeyDown(KeyCode.Space))
         {

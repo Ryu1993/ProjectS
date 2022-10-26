@@ -25,6 +25,8 @@ public class AutoGem : MonoBehaviour
     private List<GemsCount> gems;
     [SerializeField]
     private Vector3 boxSize;
+    [SerializeField]
+    private AudioClip[] clip;
     private ShowSlotInfo[] showSlotInfos;
     private float coolTime = 10f;
     private int slotCount = 2;
@@ -49,6 +51,7 @@ public class AutoGem : MonoBehaviour
     {
         if (isCoolTime)
             return;
+        SoundManager.Instance.CreateSoundBox(clip[2], harvestTransform.position);
         Collider[] colliders = Physics.OverlapBox(centerTransform.position, boxSize, Quaternion.identity, gemLayer);
         if(colliders.Length>0)
         {
@@ -152,6 +155,7 @@ public class AutoGem : MonoBehaviour
         {
             int slotNum = UnityEngine.Random.Range(0, gems.Count);
             ItemManager.Instance.CreateSceneItem(gems[slotNum].gem, interactionTransform.position);
+            SoundManager.Instance.CreateSoundBox(clip[0], harvestTransform.position);
             gems[slotNum].count--;
             totalCount--;
             if (gems[slotNum].count <=0)
@@ -176,6 +180,7 @@ public class AutoGem : MonoBehaviour
         bool check = CheckGemSlot(gem);
         if (check)
         {
+            SoundManager.Instance.CreateSoundBox(clip[1], harvestTransform.position);
             target.home.Return(target.gameObject);
             totalCount++;
         }
