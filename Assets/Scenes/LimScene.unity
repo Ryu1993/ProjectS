@@ -3390,10 +3390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f875b0054a0421d40b352b51e526b2d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip:
-  - {fileID: 8300000, guid: 0d285c882c1b68f4d8ce4709074abec8, type: 3}
-  - {fileID: 8300000, guid: 04a1d825b82b7d5419148752de9c3d1e, type: 3}
-  - {fileID: 8300000, guid: 831f364f79fce504a9d992dcf3a357f3, type: 3}
+  animator: {fileID: 0}
 --- !u!4 &515786757
 Transform:
   m_ObjectHideFlags: 0
@@ -10942,7 +10939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f875b0054a0421d40b352b51e526b2d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip: []
+  animator: {fileID: 0}
 --- !u!114 &1877196858 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4539074636382647627, guid: 59eb649ae2ee44a0c8caa703d53abf0a, type: 3}
