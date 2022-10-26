@@ -57,7 +57,7 @@ namespace BC
             if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
             {
                 Time.timeScale = 1f;
-                transform.position = objectCharacterController.transform.position;
+                transform.position = objectCharacterController.transform.position + new Vector3(0, 0.75f, 0);
                 movePointObject.SetActive(false);
                 lineRenderer.enabled = false;
 

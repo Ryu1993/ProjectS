@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MachineController : MonoBehaviour
 {
+    private UIManager uimanager;
     public Farm farm;
     [SerializeField]
     private FarmMachine farmMachine;
@@ -23,6 +24,7 @@ public class MachineController : MonoBehaviour
 
     private void Awake()
     {
+        uimanager = GetComponentInParent<UIManager>();
         for (int i = 0; i < upgradeList.Count; i++)
         {
             isUpgrades.Add(false);
@@ -48,7 +50,7 @@ public class MachineController : MonoBehaviour
             selectFarm.SetActive(!selectFarm.activeSelf);
             if (isSelectedFarm == true)
             {
-                UIManager.Instance.MachineUI.CountUpgradeList();
+                uimanager.Instance.MachineUI.CountUpgradeList();
             }
         }
     }
@@ -59,12 +61,12 @@ public class MachineController : MonoBehaviour
         Debug.Log(selectUpgrade.RequireCoin);
         if(GameManager.Instance.playerGold - selectUpgrade.RequireCoin < 0)
         {
-            UIManager.Instance.MachineUI.upgradeFail.SetActive(true);
+            uimanager.Instance.MachineUI.upgradeFail.SetActive(true);
             Debug.Log("업그레이드 실패");
         }
         else
         {
-            UIManager.Instance.MachineUI.upgradeSuccess.SetActive(true);
+            uimanager.Instance.MachineUI.upgradeSuccess.SetActive(true);
             GameManager.Instance.playerGold -= selectUpgrade.RequireCoin;
             isUpgrades[farm.Upgrades.IndexOf(selectUpgrade)] = true;
             if(farm.name == "PlantFarm")
@@ -75,7 +77,7 @@ public class MachineController : MonoBehaviour
             {
                 slimeMachine.StartFunction(selectUpgrade.UpgradeName);
             }
-            UIManager.Instance.MachineUI.CountUpgradeList();
+            uimanager.Instance.MachineUI.CountUpgradeList();
             Debug.Log("업그레이드 성공");
         }  
     }
@@ -84,9 +86,9 @@ public class MachineController : MonoBehaviour
     {
         farmListUI[0].SetActive(false);
         farmListUI[1].SetActive(true);
-        UIManager.Instance.MachineUI.CountUpgradeList();
+        uimanager.Instance.MachineUI.CountUpgradeList();
         selectFarm = farmListUI[1];
-        UIManager.Instance.MachineUI.ShowTitle();
+        uimanager.Instance.MachineUI.ShowTitle();
         isSelectedFarm = true;
     }
 }

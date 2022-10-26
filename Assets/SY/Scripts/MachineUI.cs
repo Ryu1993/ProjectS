@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MachineUI : MonoBehaviour
 {
+    private UIManager uimanager;
     [SerializeField]
     private Image upgradeSprite;
     [SerializeField]
@@ -27,7 +28,8 @@ public class MachineUI : MonoBehaviour
 
     private void Awake()
     {
-        machineUIController = UIManager.Instance.MachineController;
+        uimanager = GetComponentInParent<UIManager>();
+        machineUIController = uimanager.Instance.MachineController;
         //farm = UIManager.Instance.MachineController.farm;
     }
 
@@ -57,7 +59,7 @@ public class MachineUI : MonoBehaviour
         }
         for (int i = 0; i < farm.Upgrades.Count; i++)
         {
-            if (UIManager.Instance.MachineController.isUpgrades[i] == false)
+            if (uimanager.Instance.MachineController.isUpgrades[i] == false)
             {
                 TextMeshProUGUI upgradeUGUI = machineUIController.upgradeList[i].GetComponentInChildren<TextMeshProUGUI>();
                 UIEventFunc upgrade = machineUIController.upgradeList[i].GetComponentInChildren<UIEventFunc>();

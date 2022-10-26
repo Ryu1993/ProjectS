@@ -47,14 +47,15 @@ public class ScenePlant : MonoBehaviour, IPoolingable
         {
             rotTime = 0;
             isWater = false;
-            if (isGrow == false) //식물 자라게
+            if (!isGrow) //식물 자라게
             {
                 isGrow = true;
-                meshFilter.mesh = plant.itemMesh;
-                meshRenderer.material = plant.itemMaterilal;
+                meshFilter.sharedMesh = plant.itemMesh;
+                meshRenderer.sharedMaterial = plant.itemMaterilal;
             }
             else
             {
+                Debug.Log(bornTime);
                 bornTime++;
                 if (bornTime < growTime)
                 {
@@ -102,8 +103,8 @@ public class ScenePlant : MonoBehaviour, IPoolingable
         bornTime = 0;
         rotTime = 0;
         isGrow = false;
-        meshFilter.mesh = null;
-        meshRenderer.material = null;
+        meshFilter.sharedMesh = null;
+        meshRenderer.sharedMaterial = null;
     }
 
 }
