@@ -68,6 +68,7 @@ public class MachineController : MonoBehaviour
         {
             uimanager.Instance.MachineUI.upgradeSuccess.SetActive(true);
             GameManager.Instance.playerGold -= selectUpgrade.RequireCoin;
+            
             isUpgrades[farm.Upgrades.IndexOf(selectUpgrade)] = true;
             if(farm.name == "PlantFarm")
             {

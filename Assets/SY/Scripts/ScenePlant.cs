@@ -22,6 +22,7 @@ public class ScenePlant : MonoBehaviour, IPoolingable
     public float growTime;
     public float rotTime;
     public ObjectPool home { get; set; }
+    public bool isMoreFruit = false;
 
     private void Awake()
     {
@@ -72,10 +73,14 @@ public class ScenePlant : MonoBehaviour, IPoolingable
             RotPlant();
         } 
     }
-    
+
     public void MakeFruits()
     {
-        ItemManager.Instance.CreateSceneItem(crop, transform.position + new Vector3 (0, 1f,0f));
+        ItemManager.Instance.CreateSceneItem(crop, transform.position + new Vector3(0, 1f, 0f));
+        if(isMoreFruit == true)
+        {
+            ItemManager.Instance.CreateSceneItem(crop, transform.position + new Vector3(0, 2f, 0f));
+        }
         ItemReturn();
     }
 
