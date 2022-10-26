@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2851,7 +2851,7 @@ Transform:
   - {fileID: 1342224030}
   - {fileID: 151675449}
   m_Father: {fileID: 862414830}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &454684916
 MonoBehaviour:
@@ -3388,6 +3388,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &527202629
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 862414830}
+    m_Modifications:
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174082513765746670, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+      propertyPath: m_Name
+      value: SlimeMachine
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
 --- !u!1 &539942452
 GameObject:
   m_ObjectHideFlags: 0
@@ -5855,8 +5912,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 130703424}
-  - {fileID: 1873337886}
   - {fileID: 454684915}
+  - {fileID: 1124755363}
   m_Father: {fileID: 2055311020}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6848,6 +6905,11 @@ CanvasRenderer:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4539074636967974266, guid: 59eb649ae2ee44a0c8caa703d53abf0a, type: 3}
   m_PrefabInstance: {fileID: 209410082}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1124755363 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
+  m_PrefabInstance: {fileID: 527202629}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1168739614
 GameObject:
@@ -10658,11 +10720,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crop: {fileID: 0}
---- !u!4 &1873337886 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-  m_PrefabInstance: {fileID: 6174082514343008755}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1877196858 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4539074636382647627, guid: 59eb649ae2ee44a0c8caa703d53abf0a, type: 3}
@@ -12392,240 +12449,3 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2137036918}
   m_CullTransparentMesh: 1
---- !u!1001 &6174082514343008755
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 862414830}
-    m_Modifications:
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.size
-      value: 41
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 0f96c172d9295664a9b15fc1f2aa3021, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 302c677fc9093554cb76babae27d6eab, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: becda951cdb744a468754cbf8640c34a, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[3]
-      value: 
-      objectReference: {fileID: 8300000, guid: dedb367a55c0cb44b94c2748c58702bb, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[4]
-      value: 
-      objectReference: {fileID: 8300000, guid: ab887a3e4b400274da50cb325a24f9f5, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[5]
-      value: 
-      objectReference: {fileID: 8300000, guid: 06db5275de601124ea4034728549843c, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[6]
-      value: 
-      objectReference: {fileID: 8300000, guid: 0389af6385f40cd4b817f0c0531cc798, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[7]
-      value: 
-      objectReference: {fileID: 8300000, guid: 41b658d87fd88ac4783389fe547d7c3b, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[8]
-      value: 
-      objectReference: {fileID: 8300000, guid: 71e630de45f10334ca387fdbeffc9e08, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[9]
-      value: 
-      objectReference: {fileID: 8300000, guid: 09cf02d9742841747a24dcc33475b072, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[10]
-      value: 
-      objectReference: {fileID: 8300000, guid: 501e70c84450aec4fa06a94d33a26b7b, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[11]
-      value: 
-      objectReference: {fileID: 8300000, guid: 4bd451ba765b39f429e359db7e34ed92, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[12]
-      value: 
-      objectReference: {fileID: 8300000, guid: abd961935b3624b44b4c97df6c61f65b, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[13]
-      value: 
-      objectReference: {fileID: 8300000, guid: 7177c7883c4412c4990a4550590374cd, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[14]
-      value: 
-      objectReference: {fileID: 8300000, guid: f05f927f3f8e785419e0e060b838c4cc, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[15]
-      value: 
-      objectReference: {fileID: 8300000, guid: 322d10982a066bd44897c3ed451efd4c, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[16]
-      value: 
-      objectReference: {fileID: 8300000, guid: 14073370b2e066544aa7f839763e2a45, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[17]
-      value: 
-      objectReference: {fileID: 8300000, guid: a6d4b5a997878c94e981176173efbd97, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[18]
-      value: 
-      objectReference: {fileID: 8300000, guid: f428970791f69fd4684b0021df55641b, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[19]
-      value: 
-      objectReference: {fileID: 8300000, guid: 1e273c098c69d444b934b56ca0cbf5e4, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[20]
-      value: 
-      objectReference: {fileID: 8300000, guid: 2686ae10e747ded45830a397bd7cb9d5, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[21]
-      value: 
-      objectReference: {fileID: 8300000, guid: 1af5ce85ac01a4f44a3f798d8edca28c, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[22]
-      value: 
-      objectReference: {fileID: 8300000, guid: 1eaa2468692ce1f4f9ceec2175ffebd7, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[23]
-      value: 
-      objectReference: {fileID: 8300000, guid: f39c9fec1f67e4241bf5839094937566, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[24]
-      value: 
-      objectReference: {fileID: 8300000, guid: 55a01097805224848a0613c625a0a03e, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[25]
-      value: 
-      objectReference: {fileID: 8300000, guid: 09cac78a41440d745b9138cb616b4bfd, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[26]
-      value: 
-      objectReference: {fileID: 8300000, guid: 2122066226c387045b5696c6b6b31f3a, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[27]
-      value: 
-      objectReference: {fileID: 8300000, guid: 2e1e9f3918bba6c4f9f339baec1ac061, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[28]
-      value: 
-      objectReference: {fileID: 8300000, guid: 5cf9deea458b8fd4cbcf819b4f17ff22, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[29]
-      value: 
-      objectReference: {fileID: 8300000, guid: ba9ef29de6b6573498f7270666d3d722, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[30]
-      value: 
-      objectReference: {fileID: 8300000, guid: c150a2520c871f4418ef7ddd4a8e81f1, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[31]
-      value: 
-      objectReference: {fileID: 8300000, guid: b5541d64ae83bc74b921cdd0d6337845, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[32]
-      value: 
-      objectReference: {fileID: 8300000, guid: e9f7326918565aa448b517f79afb0a8a, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[33]
-      value: 
-      objectReference: {fileID: 8300000, guid: aed0cfe0f7faf6340b959bdd97083d77, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[34]
-      value: 
-      objectReference: {fileID: 8300000, guid: a43aaa13989500a49a947aac291bf087, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[35]
-      value: 
-      objectReference: {fileID: 8300000, guid: 4a945660d0c71d445acb430b6420beef, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[36]
-      value: 
-      objectReference: {fileID: 8300000, guid: 188e517e9430c98449f3f31db663fd36, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[37]
-      value: 
-      objectReference: {fileID: 8300000, guid: 840e01a8d0bcfe24da7de927f7363f82, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[38]
-      value: 
-      objectReference: {fileID: 8300000, guid: de3e068c2af898e4d996009a34549689, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[39]
-      value: 
-      objectReference: {fileID: 8300000, guid: d8f895bee3dbd1346b6416d39ae5c091, type: 3}
-    - target: {fileID: 6174082513384608947, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: audioClip.Array.data[40]
-      value: 
-      objectReference: {fileID: 8300000, guid: 7b2e7c841dcd97e449e2f3776d2cb4c0, type: 3}
-    - target: {fileID: 6174082513384608973, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746669, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513765746670, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_Name
-      value: SlimeMachine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513800176662, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6174082513800176662, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d0ceeb91879a26e40a1ba2a7fafbb391, type: 3}
