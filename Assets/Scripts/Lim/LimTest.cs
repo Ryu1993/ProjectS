@@ -1,23 +1,22 @@
+using BC;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LimTest : MonoBehaviour
 {
-    [SerializeField]
-    private Crop crop;
-    //Rigidbody rb;
-    private void Awake()
-    {
-        //rb = GetComponent<Rigidbody>();
-    }
-
+    public Animator animator;
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Q))
         {
-            ItemManager.Instance.CreateSceneItem(crop, transform.position);
+            animator.SetBool("asd", true);
         }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            animator.SetBool("asd", false);
+        }
+
         /*
         if(Input.GetKeyDown(KeyCode.Space))
         {

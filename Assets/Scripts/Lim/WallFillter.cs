@@ -22,8 +22,8 @@ public class WallFillter : MonoBehaviour
         {
             return;
         }
-        if(other.transform.parent == slimeFarm.InsideObject.transform)
-        {
+        //if(other.transform.parent == slimeFarm.InsideObject.transform)
+        //{
         Rigidbody rb = other.GetComponent<Rigidbody>();
         if (other.TryGetComponent(out SceneSlime forSlime))
         {
@@ -36,7 +36,7 @@ public class WallFillter : MonoBehaviour
             {
                 opposite = Vector3.Reflect(forSlime.rigi.velocity, transform.up);
             }
-            forSlime.MoveStop(0.2f);
+            forSlime.MoveStop(0.1f);
             rb.velocity = Vector3.zero;
             rb.AddForce(opposite*0.05f, ForceMode.Impulse);
         }
@@ -47,10 +47,10 @@ public class WallFillter : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.AddForce(opposite*0.05f,ForceMode.Impulse);
         }
-        }
-        else
-        {
-            other.transform.parent = slimeFarm.InsideObject.transform;
-        }
+        //}
+        //else
+        //{
+        //    other.transform.parent = slimeFarm.InsideObject.transform;
+        //}
     }
 }
