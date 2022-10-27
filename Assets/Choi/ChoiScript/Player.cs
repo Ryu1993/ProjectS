@@ -20,6 +20,10 @@ namespace BC
         [SerializeField]
         GameObject uiPhone;
         [SerializeField]
+        GameObject rightHand;
+        [SerializeField]
+        GameObject vaccumPack;
+        [SerializeField]
         CharacterController objectCharacterController;
 
         RaycastHit movementHit;
@@ -64,13 +68,21 @@ namespace BC
             }
             if(OVRInput.GetDown(OVRInput.Button.One))
             {
-                uiPhone.SetActive(uiPhone.activeSelf);
+                PlayerUISwitch();
             }
-
-
+            if(OVRInput.GetUp(OVRInput.Button.One))
+            {
+                PlayerUISwitch();
+            }
         }
 
-   
+
+        private void PlayerUISwitch()
+        {
+            uiPhone.SetActive(uiPhone.activeSelf);
+            rightHand.SetActive(rightHand.activeSelf);
+            vaccumPack.SetActive(vaccumPack.activeSelf);
+        }
 
     }
 
