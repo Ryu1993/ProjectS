@@ -47,7 +47,8 @@ MonoBehaviour:
   slimes: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 512
+  maxSlimeAmount: 10
 --- !u!1 &1936384680912744601
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +131,8 @@ MonoBehaviour:
   slimes: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 512
+  maxSlimeAmount: 10
 --- !u!1 &1936384682367615030
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +180,8 @@ MonoBehaviour:
   slimes: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 512
+  maxSlimeAmount: 10
 --- !u!1 &1936384682386035021
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,4 +229,5 @@ MonoBehaviour:
   slimes: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 512
+  maxSlimeAmount: 10

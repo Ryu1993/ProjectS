@@ -14,6 +14,7 @@ public class SpawnZone : MonoBehaviour
     private float range_x;
     private float range_z;
     private int curSlimeAmount;
+    [SerializeField]
     private int maxSlimeAmount;
     private WaitForSeconds oneSecond = new WaitForSeconds(0.1f);
     private RaycastHit hit;
