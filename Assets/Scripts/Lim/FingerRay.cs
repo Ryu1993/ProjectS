@@ -10,6 +10,12 @@ public class FingerRay : MonoBehaviour
     private Vector3[] vecs = new Vector3[2];
     [SerializeField]
     private LineRenderer line;
+    private Transform rayPoint;
+
+    private void Awake()
+    {
+        rayPoint = transform.GetComponentInChildren<Transform>();
+    }
 
     private void Update()
     {
@@ -30,7 +36,6 @@ public class FingerRay : MonoBehaviour
         {
             if (Physics.Raycast(transform.position, transform.forward, out hit, 9f, mask,QueryTriggerInteraction.Collide))
             {
-                Debug.Log(target);
                 vecs[0] = transform.position;
                 vecs[1] = hit.point;
                 line.SetPositions(vecs);
@@ -40,7 +45,13 @@ public class FingerRay : MonoBehaviour
                     target?.OnClick.Invoke();
                 }
             }
-
+            else
+            {
+                rayPoint.localPosition = transform.forward * 9f;
+                vecs[0] = transform.position;
+                vecs[1] = rayPoint.position;
+                line.SetPositions(vecs);
+            }
             //레이 발사 위치 조정
         }
         else
