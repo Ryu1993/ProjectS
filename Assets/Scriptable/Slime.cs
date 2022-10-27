@@ -12,4 +12,8 @@ public class Slime : Item
     [SerializeField]
     private Gem _rewardGem;
     public Gem rewardGem { get { return _rewardGem; }}
+    public bool isHat;
+    public Mesh hatMesh;
+    public Material hatMaterial;
+
 }

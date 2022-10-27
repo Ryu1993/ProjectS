@@ -42,7 +42,8 @@ namespace BC
         private UnityAction<float> vaccumCheck;
         public UnityAction returnAcition;
         private NavMeshHit navHit;
-
+        private MeshFilter hatMeshFilter;
+        private MeshRenderer hatMeshRender;
 
         private void Awake()
         {
@@ -50,6 +51,10 @@ namespace BC
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             sliemSkin = GetComponentInChildren<SkinnedMeshRenderer>();
+            Transform hat = transform.GetChild(0).GetChild(0).GetChild(0);
+            hat.TryGetComponent(out hatMeshFilter);
+            hat.TryGetComponent(out hatMeshRender);
+
         }
 
         public void SlimeSet(Slime slime)
@@ -57,6 +62,11 @@ namespace BC
             curSlime = slime;
             sliemSkin.sharedMesh = slime.itemMesh;
             sliemSkin.sharedMaterials[0] = slime.itemMaterilal;
+            if(slime.isHat)
+            {
+                hatMeshFilter.sharedMesh = slime.hatMesh;
+                hatMeshRender.sharedMaterial = slime.hatMaterial;
+            }
             FaceSet(slimeFace.Idleface);
             hungry = 0;
             agent.enabled = true;

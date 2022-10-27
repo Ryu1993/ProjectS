@@ -22,3 +22,6 @@ MonoBehaviour:
   speed: 3.5
   jumpPower: 0
   _rewardGem: {fileID: 0}
+  isHat: 1
+  hatMesh: {fileID: 240824333094594727, guid: fc38eb1d15aad094cafb3cb0e7542241, type: 3}
+  hatMaterial: {fileID: 2100000, guid: c91732b1f9025254389e917797db9b70, type: 2}
