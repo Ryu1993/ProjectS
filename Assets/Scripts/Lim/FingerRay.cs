@@ -10,12 +10,10 @@ public class FingerRay : MonoBehaviour
     private Vector3[] vecs = new Vector3[2];
     [SerializeField]
     private LineRenderer line;
+    [SerializeField]
     private Transform rayPoint;
 
-    private void Awake()
-    {
-        rayPoint = transform.GetComponentInChildren<Transform>();
-    }
+  
 
     private void Update()
     {
@@ -47,7 +45,7 @@ public class FingerRay : MonoBehaviour
             }
             else
             {
-                rayPoint.localPosition = transform.forward * 9f;
+                rayPoint.localPosition = new Vector3(0, 0, -90f);
                 vecs[0] = transform.position;
                 vecs[1] = rayPoint.position;
                 line.SetPositions(vecs);

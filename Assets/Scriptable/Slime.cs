@@ -15,5 +15,8 @@ public class Slime : Item
     public bool isHat;
     public Mesh hatMesh;
     public Material hatMaterial;
+    public Vector3 hatPosition;
+    public Vector3 hatRotation;
+
 
 }

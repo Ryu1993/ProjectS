@@ -19,9 +19,11 @@ MonoBehaviour:
   _itemMaterial: {fileID: 2100000, guid: 0ac85d6e19b5e24419fc938040be61e1, type: 2}
   likeFeed: {fileID: 11400000, guid: 9217e3a1a9a3349b7ae11799b899a550, type: 2}
   hungry: 0
-  speed: 3.5
+  speed: 2
   jumpPower: 0
   _rewardGem: {fileID: 11400000, guid: b46a8c7ad11f76540a8f955d84e9263f, type: 2}
   isHat: 1
   hatMesh: {fileID: 240824333094594727, guid: fc38eb1d15aad094cafb3cb0e7542241, type: 3}
   hatMaterial: {fileID: 2100000, guid: c91732b1f9025254389e917797db9b70, type: 2}
+  hatPosition: {x: 0, y: 0.6619998, z: 0.02490002}
+  hatRotation: {x: 0, y: 0, z: 0}

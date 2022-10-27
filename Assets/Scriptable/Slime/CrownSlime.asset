@@ -17,8 +17,13 @@ MonoBehaviour:
   _itemSprite: {fileID: 21300000, guid: 7f36c25ad3ffa364abbe4effcd15651f, type: 3}
   _itemMesh: {fileID: -2659932603334005503, guid: 9981a4f80fb95b04fb9d36e07baa17cb, type: 3}
   _itemMaterial: {fileID: 2100000, guid: 507fed0338ce65948937cd10a0904a51, type: 2}
-  likeFeed: {fileID: 0}
+  likeFeed: {fileID: 11400000, guid: d43788f744a7a4a89a6ced2039ac2d59, type: 2}
   hungry: 0
-  speed: 3
+  speed: 4
   jumpPower: 0
-  _rewardGem: {fileID: 0}
+  _rewardGem: {fileID: 11400000, guid: 7208603ea64f7d44d8992998686a97d1, type: 2}
+  isHat: 1
+  hatMesh: {fileID: -8918359706675279303, guid: 7f9934f54349dc2489d80b0298740ae5, type: 3}
+  hatMaterial: {fileID: 2100000, guid: c91732b1f9025254389e917797db9b70, type: 2}
+  hatPosition: {x: -0.04187882, y: 0.4391075, z: -0.000006496906}
+  hatRotation: {x: -0.013, y: 0.007, z: 8.625}
