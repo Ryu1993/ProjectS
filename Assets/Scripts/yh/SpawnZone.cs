@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SpawnZone : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class SpawnZone : MonoBehaviour
     private RaycastHit hit;
     private WaitUntil slimeCount;
     private WaitForSeconds wait = new WaitForSeconds(5f);
- 
+    private NavMeshHit navHit;
     private void Awake()
     {
         slimeCount = new WaitUntil(() => curSlimeAmount < maxSlimeAmount);
@@ -41,12 +42,18 @@ public class SpawnZone : MonoBehaviour
     }
     private Vector3 PointSet()
     {
-        range_x = Random.Range(transform.position.x, transform.position.x + 10);
-        range_z = Random.Range(transform.position.z, transform.position.z + 10);
-        randomPosition = new Vector3(range_x, transform.position.y, range_z);
-        Physics.Raycast(randomPosition, Vector3.down, out hit, groundMask);
-        hitPosition = hit.point;
-        hitPosition.y += 0.25f;
+        while(true)
+        {
+            range_x = Random.Range(transform.position.x, transform.position.x + 10);
+            range_z = Random.Range(transform.position.z, transform.position.z + 10);
+            randomPosition = new Vector3(range_x, transform.position.y, range_z);
+            Physics.Raycast(randomPosition, Vector3.down, out hit, groundMask);
+            if(NavMesh.SamplePosition(hit.point, out navHit, 5, NavMesh.AllAreas))
+            {
+                hitPosition = navHit.position;
+                break;
+            }
+        }
         return hitPosition;
     }
 
