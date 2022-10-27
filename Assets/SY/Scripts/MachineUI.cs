@@ -59,6 +59,7 @@ public class MachineUI : MonoBehaviour
         }
         for (int i = 0; i < farm.Upgrades.Count; i++)
         {
+            machineUIController.isUpgrades[1] = false;
             if (uimanager.Instance.MachineController.isUpgrades[i] == false)
             {
                 TextMeshProUGUI upgradeUGUI = machineUIController.upgradeList[i].GetComponentInChildren<TextMeshProUGUI>();

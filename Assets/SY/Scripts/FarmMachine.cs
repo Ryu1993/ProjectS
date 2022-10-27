@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
 
 public class FarmMachine : MonoBehaviour
 {
-    //업그레이드 : 스프링쿨러, 비료, 작물 제거, 비옥한 토양, 기적의 비료
+    //업그레이드 : 스프링쿨러, 비료, 작물 제거, 비옥한 토양, 기적의 비료 -> 작물제거는 리스트 제거에서 제외
     [SerializeField] LayerMask cropMask;
     public Vector3 machineHeight;
     public float detectRange;
@@ -23,13 +24,13 @@ public class FarmMachine : MonoBehaviour
     [SerializeField]
     private Image cropImage;
     public Crop tempCrop;
-   
-
-
+    private bool isFertilizer = false;
+    private bool isFertileSoil = false;
+    private bool isMoreFruits = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out SceneCrop crop))
+        if (other.TryGetComponent(out SceneCrop crop))
         {
             DetectCrop(crop);
         }
@@ -121,6 +122,7 @@ public class FarmMachine : MonoBehaviour
             }
             childPlant = GetComponentsInChildren<ScenePlant>();
             isPlanted = true;
+            UpgradeCheck();
         }
     }
 
@@ -157,6 +159,7 @@ public class FarmMachine : MonoBehaviour
     //기적의 비료(썩는 데 걸리는 시간 추가) : 500G
     public void Fertilizer()
     {
+        isFertilizer = true;
         if (childPlant != null)
         {
             for (int i = 0; i < childPlant.Length; i++)
@@ -170,6 +173,7 @@ public class FarmMachine : MonoBehaviour
     //비옥한 토양(빨리 자라게) : 300G
     public void FertileSoil()
     {
+        isFertileSoil = true;
         if (childPlant != null)
         {
             for (int i = 0; i < childPlant.Length; i++)
@@ -183,14 +187,14 @@ public class FarmMachine : MonoBehaviour
     //나오는 열매 개수 증가 : 500G
     public void MoreFruits()
     {
+        isMoreFruits = true;
         if (childPlant != null)
         {
             for (int i = 0; i < childPlant.Length; i++)
             {
-                //childPlant[i].isWater = true;
+                //childPlant[i].isMoreFruit = true;
             }
         }
-
     }
 
     public void AutoWater()
@@ -209,5 +213,12 @@ public class FarmMachine : MonoBehaviour
         {
             return;
         }
+    }
+
+    public void UpgradeCheck()
+    {
+        if (isFertileSoil) FertileSoil();
+        if (isFertilizer) Fertilizer();
+        if (isMoreFruits) MoreFruits();
     }
 }
