@@ -44,11 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25984dc78a64dc045ac35ba51ab20f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlantAmount: 0
+  maxPlantAmount: 5
   plantData: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
 --- !u!1 &8145784177283688898
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,11 +93,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25984dc78a64dc045ac35ba51ab20f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlantAmount: 0
+  maxPlantAmount: 5
   plantData: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
 --- !u!1 &8145784177967754404
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,11 +142,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25984dc78a64dc045ac35ba51ab20f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlantAmount: 0
+  maxPlantAmount: 5
   plantData: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
 --- !u!1 &8145784178531210632
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,11 +227,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25984dc78a64dc045ac35ba51ab20f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlantAmount: 0
+  maxPlantAmount: 5
   plantData: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
 --- !u!1 &8145784178975847443
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,8 +276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25984dc78a64dc045ac35ba51ab20f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlantAmount: 0
+  maxPlantAmount: 5
   plantData: []
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512

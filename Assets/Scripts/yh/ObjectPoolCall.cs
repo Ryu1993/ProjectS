@@ -18,7 +18,7 @@ public class ObjectPoolCall : MonoBehaviour
     Vector3 randomPosition;
     float range_x;
     float range_z;
-
+    private ScenePlant[] childPlant;
 
     private void Awake()
     {
@@ -38,15 +38,27 @@ public class ObjectPoolCall : MonoBehaviour
     }
     private IEnumerator Start()
     {
+        TimeManager.Instance.halfDayProgressAction += WildeWater;
         while (true)
         {
             yield return plantCount;
-            ItemManager.Instance.CreateScenePlant(plantData[Random.Range(0, plantData.Length)], SpawnPosition());
+            ItemManager.Instance.CreateScenePlant(plantData[Random.Range(0, plantData.Length)], SpawnPosition()).transform.parent = gameObject.transform;
             curPlantAmount++;
+            childPlant = GetComponentsInChildren<ScenePlant>();
             yield return oneSecond;
         }
     }
 
+    public void WildeWater()
+    {
+        if (childPlant != null)
+        {
+            for (int i = 0; i < childPlant.Length; i++)
+            {
+                childPlant[i].isWater = true;
+            }
+        }
+    }
     /*private void Temp(BC.SceneSlime sceneSlime)
     {
         Debug.Log("실행 되나?");
