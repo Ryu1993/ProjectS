@@ -79,9 +79,9 @@ namespace BC
 
         private void PlayerUISwitch()
         {
-            uiPhone.SetActive(uiPhone.activeSelf);
-            rightHand.SetActive(rightHand.activeSelf);
-            vaccumPack.SetActive(vaccumPack.activeSelf);
+            uiPhone.SetActive(!uiPhone.activeSelf);
+            rightHand.SetActive(!rightHand.activeSelf);
+            vaccumPack.SetActive(!vaccumPack.activeSelf);
         }
 
     }

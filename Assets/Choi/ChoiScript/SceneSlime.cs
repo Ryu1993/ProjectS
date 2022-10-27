@@ -44,17 +44,21 @@ namespace BC
         private NavMeshHit navHit;
         private MeshFilter hatMeshFilter;
         private MeshRenderer hatMeshRender;
-
         private void Awake()
         {
             rigi = GetComponent<Rigidbody>();
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             sliemSkin = GetComponentInChildren<SkinnedMeshRenderer>();
+        }
+
+        public void HatSetting(Vector3 position,Vector3 rotation)
+        {
             Transform hat = transform.GetChild(0).GetChild(0).GetChild(0);
             hat.TryGetComponent(out hatMeshFilter);
             hat.TryGetComponent(out hatMeshRender);
-
+            hat.localPosition = position;
+            hat.localRotation = Quaternion.Euler(rotation);
         }
 
         public void SlimeSet(Slime slime)
@@ -62,6 +66,7 @@ namespace BC
             curSlime = slime;
             sliemSkin.sharedMesh = slime.itemMesh;
             sliemSkin.sharedMaterials[0] = slime.itemMaterilal;
+            HatSetting(curSlime.hatPosition, curSlime.hatRotation);
             if(slime.isHat)
             {
                 hatMeshFilter.sharedMesh = slime.hatMesh;
@@ -154,6 +159,8 @@ namespace BC
         public void ItemReturn()
         {
             vaccumCheck = null;
+            hatMeshFilter.sharedMesh = null;
+            hatMeshRender.sharedMaterial = null;
             agent.enabled = false;
             animator.applyRootMotion = true;
             rigi.isKinematic = true;
