@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerUIButton : MonoBehaviour
+public class PlayerUIButton : MonoBehaviour,ITouchable
 {
     [SerializeField]
     private GameObject activateUI;
@@ -16,21 +16,20 @@ public class PlayerUIButton : MonoBehaviour
         canvasGO = transform.GetComponentInParent<Canvas>().gameObject;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void ClickEvent()
     {
-        if(other.TryGetComponent(out ITouchable target))
+        if (isExit)
         {
-            if(isExit)
-            {
-                Application.Quit();    
-            }
-            else
-            {
-                activateUI.SetActive(true);
-                canvasGO.SetActive(false);
-            }
+            //Application.Quit();
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
+        else
+        {
+            activateUI?.SetActive(true);
+            canvasGO.SetActive(false);
         }
     }
+
 
 
 
