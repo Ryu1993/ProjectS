@@ -49,7 +49,7 @@ namespace BC
                 if(Physics.Raycast(leftHand.position, leftHand.forward, out movementHit, Mathf.Infinity, groundMask))
                 {
                     lineRenderer.enabled = true;
-                    linePositions[0] = transform.position - new Vector3(0, 0.7f, 0);
+                    linePositions[0] = transform.position - new Vector3(0,1, 0);
                     movePointObject.SetActive(true);
                     Vector3 dir = movementHit.point - movePointObject.transform.position;
                     objectCharacterController.Move(dir);

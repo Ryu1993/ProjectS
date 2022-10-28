@@ -87,9 +87,13 @@ namespace BC
             vaccumCheck?.Invoke(agentDelay);
             if (isFlying) return;
             hungry += Time.fixedDeltaTime;
-            if(hungry>=300)
+            if (hungry <= 300)
             {
                 FindFeed();
+            }
+            if(hungry>300)
+            {
+                CreateGem();
             }
             animator.SetFloat(Parameter.speed, agent.velocity.magnitude);
             if (agent.remainingDistance <= agent.stoppingDistance)
@@ -119,9 +123,8 @@ namespace BC
 
         private void FindFeed()
         {
-            FaceSet(slimeFace.damageFace);
             feedColliders[0] = null;
-            Physics.OverlapSphereNonAlloc(transform.position, 1f, feedColliders, feedMask);
+            Physics.OverlapSphereNonAlloc(transform.position, 3f, feedColliders, feedMask);
             if(feedColliders[0] != null)
             {
                 if (feedColliders[0].TryGetComponent(out SceneCrop feed))
@@ -130,7 +133,6 @@ namespace BC
                     {
                         feed.ItemReturn();
                         hungry += 150;
-                        CreateGem();
                     }
                 }
             }
@@ -138,6 +140,7 @@ namespace BC
         private void CreateGem()
         {
             ItemManager.Instance.CreateSceneItem(curSlime.rewardGem, transform.position);
+            hungry = 0;
         }
         private void SlimeJump()
         {
